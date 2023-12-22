@@ -1,0 +1,35 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.0'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.codebee'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
+	implementation("org.projectlombok:lombok:1.18.26")
+	implementation ("org.springframework.boot:spring-boot-devtools")
+	implementation("org.mariadb.jdbc:mariadb-java-client:2.7.0")
+	compileOnly("org.project-lombok:lombok")
+	runtimeOnly("com.mysql:mysql-connector-j")
+	annotationProcessor("org.project-lombok:lombok")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
