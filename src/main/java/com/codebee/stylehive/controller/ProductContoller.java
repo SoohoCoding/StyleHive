@@ -1,18 +1,18 @@
 package com.codebee.stylehive.controller;
 
-import com.codebee.stylehive.jpa.entity.ProductEntity;
+import com.codebee.stylehive.dto.ProductDealDTO;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.service.ProductService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @NoArgsConstructor
-@RequestMapping("/api/product")
-public class ProductContoller {
+@RequestMapping("/api/product")public class ProductContoller {
+
 
     ProductService service;
 
@@ -23,9 +23,10 @@ public class ProductContoller {
 
     @GetMapping("/{productId}")
     public ProductEntity getById(@PathVariable("productId") int productId) {
-        System.out.println(
-                service.findById(productId).getProductSize()
-        );
         return service.findById(productId);
+    }
+    @GetMapping("/deal/{productId}")
+    public List<ProductDealDTO> getDealById(@PathVariable("productId") int productId) {
+        return service.findAllProductDealByProductId(productId);
     }
 }
