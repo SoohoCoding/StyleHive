@@ -1,4 +1,4 @@
-package com.codebee.stylehive.jpa.entity.product;
+package com.codebee.stylehive.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_img")
-public class ProductImgEntity {
+@Table(name = "img_thumb")
+public class ImgThumbEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int productImgId;
+    int imgThumbId;
+    int commNo;
     int productId;
-    String productImgOrigin;
-    String productImgStore;
+    String imgThumbUrl;
+    String imgThumbStore;
 }
