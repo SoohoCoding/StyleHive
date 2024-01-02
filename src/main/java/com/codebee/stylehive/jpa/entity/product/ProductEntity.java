@@ -1,6 +1,6 @@
 package com.codebee.stylehive.jpa.entity.product;
 
-import com.codebee.stylehive.dto.ProductWishCountDTO;
+import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +36,7 @@ public class ProductEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
-    private List<ProductImgEntity> productImgList = new ArrayList<>();
+    private List<ImgThumbEntity> productImgList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
