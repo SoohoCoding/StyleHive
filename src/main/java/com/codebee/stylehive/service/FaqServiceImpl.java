@@ -27,4 +27,10 @@ public class FaqServiceImpl implements FaqService {
     public Page<FaqEntity> getFaqsByCategory(String category, Pageable pageable) {
         return dao.getFaqsByCategory(category, pageable);
     }
+
+    @Override
+    public Page<FaqEntity> searchAllFaqs(String search, Pageable pageable) {
+        return dao.searchAllFaqs(search, pageable);
+    }
+
 }

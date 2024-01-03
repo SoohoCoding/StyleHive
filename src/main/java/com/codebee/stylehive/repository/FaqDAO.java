@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface FaqDAO {
     Page<FaqEntity> getAllFaqs(Pageable pageable);
     Page<FaqEntity> getFaqsByCategory(String category, Pageable pageable);
+    Page<FaqEntity> searchAllFaqs(String search, Pageable pageable);
 }

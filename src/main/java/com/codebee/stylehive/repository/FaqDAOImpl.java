@@ -28,5 +28,9 @@ public class FaqDAOImpl implements FaqDAO {
         return repo.findByFaqCate(category, pageable);
     }
 
+    @Override
+    public Page<FaqEntity> searchAllFaqs(String search, Pageable pageable) {
+        return repo.findByFaqTitleContainingOrFaqContentContaining(search, search, pageable);
+    }
 
 }

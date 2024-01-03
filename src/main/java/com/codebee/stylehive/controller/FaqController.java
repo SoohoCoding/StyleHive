@@ -23,23 +23,23 @@ public class FaqController {
         this.service = service;
     }
 
-    @GetMapping("/all")
-    public Page<FaqEntity> getAllFaqs(@RequestParam(defaultValue = "1") int page) {
-        int size = 20;
-        Pageable pageable = PageRequest.of(page-1, size);
-        return service.getAllFaqs(pageable);
-    }
-
     @GetMapping
     public Page<FaqEntity> getFaqsByCategory(@RequestParam(required = false) String category,
+                                             @RequestParam(required = false) String search,
                                              @RequestParam(defaultValue = "1") int page) {
         int size = 20;
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        if (category == null || category.equals("전체")) {
-            return service.getAllFaqs(pageable);
+        if (search != null && !search.isEmpty()) {
+            // 검색어가 입력된 경우
+            return service.searchAllFaqs(search, pageable);
         } else {
-            return service.getFaqsByCategory(category, pageable);
+            // 검색어가 입력되지 않은 경우
+            if (category == null || category.equals("전체")) {
+                return service.getAllFaqs(pageable);
+            } else {
+                return service.getFaqsByCategory(category, pageable);
+            }
         }
     }
 }
