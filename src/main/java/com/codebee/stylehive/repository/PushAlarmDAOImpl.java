@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @NoArgsConstructor
 public class PushAlarmDAOImpl implements PushAlarmDAO {
@@ -20,5 +22,10 @@ public class PushAlarmDAOImpl implements PushAlarmDAO {
     @Override
     public PushAlarmEntity findById(int id) {
         return this.repo.findById(id).get();
+    }
+
+    @Override
+    public List<PushAlarmEntity> findAll() {
+        return repo.findAll();
     }
 }
