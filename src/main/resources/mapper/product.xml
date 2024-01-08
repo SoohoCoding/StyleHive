@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codebee.stylehive.product">
+	<select id="selectProductDealDone" resultType="productDeal" parameterType="int">
+		select p.deal_price dealPrice, p.deal_date dealDate
+		from product_deal p
+		where p.deal_progress = 'done'
+		and p.product_id = #{productId}
+		order by p.deal_date asc;
+	</select>
+
+	<select id="selectProductWishList" resultType="productWishCount" parameterType="int">
+		select ps.product_size_value productSize, count(pw.product_wish_id) count
+		from product_size ps
+		left join product_wish pw on ps.product_size_id = pw.product_size_id and ps.product_id = #{productId}
+		group by ps.product_size_value
+	</select>
+
+	<select id="selectProductWishCount" resultType="int" parameterType="int">
+		select count(distinct pw.user_id) count from product_wish pw
+		left join (select * from product_size) ps
+		on  pw.product_size_id = ps.product_size_id
+		where ps.product_id = #{productId};
+	</select>
+</mapper>
