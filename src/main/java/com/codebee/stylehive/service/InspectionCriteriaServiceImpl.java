@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @NoArgsConstructor
 public class InspectionCriteriaServiceImpl implements InspectionCriteriaService {
@@ -14,6 +16,11 @@ public class InspectionCriteriaServiceImpl implements InspectionCriteriaService 
     @Autowired
     public InspectionCriteriaServiceImpl(InspectionCriteriaDAO dao) {
         this.dao = dao;
+    }
+
+    @Override
+    public List<String> getInspectionTitles() {
+        return dao.getInspectionTitles();
     }
 
     @Override

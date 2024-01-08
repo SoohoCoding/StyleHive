@@ -12,27 +12,27 @@ const NoticeList = () => {
   const [notices, setNotices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수 추가
-//  const totalItems = 20;
-//
-//  // 공지사항 더미 데이터
-//  const dummyNotices = Array.from({ length: totalItems }, (_, index) => ({
-//    id: index + 1,
-//    title: `Notice ${index + 1}`,
-//  }));
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
       const fetchNotices = async () => {
         try {
-          const response = await axios.get(`/api/notices?page=${currentPage}`);
+          const response = await axios.get(`http://localhost:8080/api/notices?page=${currentPage}`);
           setNotices(response.data.content);
           setTotalPages(response.data.totalPages);
         } catch (error) {
           console.error('Error fetching notices:', error);
+        } finally {
+               // 로딩 상태를 false로 설정
+               setLoading(false);
         }
       };
 
-    fetchNotices();
-  }, [currentPage]);
+    // 페이지 로딩 시에만 호출되도록 수정
+      if (loading) {
+        fetchNotices();
+      }
+  }, [currentPage, loading]);
 
   const handlePageChange = (newPage) => {
     if (newPage < 1) {
@@ -74,6 +74,10 @@ const NoticeList = () => {
         <div className="notice-header">
           <h3>공지사항</h3>
         </div>
+        {loading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <>
         <ul className="notices-list">
           {notices.map((notice) => (
             <li key={notice.noticeNo}>{notice.noticeCate} {notice.noticeTitle}</li>
@@ -98,6 +102,8 @@ const NoticeList = () => {
             </button>
           </div>
         </div>
+        </>
+                )}
       </div>
       </div>
       <Footer />

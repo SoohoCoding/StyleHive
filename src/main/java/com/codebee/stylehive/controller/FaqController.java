@@ -24,7 +24,7 @@ public class FaqController {
     }
 
     @GetMapping
-    public Page<FaqEntity> getFaqsByCategory(@RequestParam(required = false) String category,
+    public Page<FaqEntity> getFaqsByCategory(@RequestParam(defaultValue = "전체") String category,
                                              @RequestParam(required = false) String search,
                                              @RequestParam(defaultValue = "1") int page) {
         int size = 20;
