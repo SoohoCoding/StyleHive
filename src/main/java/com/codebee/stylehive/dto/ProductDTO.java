@@ -15,10 +15,14 @@ public class ProductDTO {
     private String productEngName;
     private String productKorName;
     private String productRelease;
-    private String productBrand;
+    private int productBrandId;
     private String productColor;
     private String productSize;
     private String productModelNum;
     private String productDate;
     private String productState;
+
+    private int nowBuyPrice;
+    private String imgUrl;
+    private String productBrandEngName;
 }

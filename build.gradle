@@ -23,6 +23,9 @@ dependencies {
 	implementation("org.projectlombok:lombok:1.18.26")
 	implementation ("org.springframework.boot:spring-boot-devtools")
 	implementation("org.mariadb.jdbc:mariadb-java-client:2.7.0")
+	implementation("com.google.code.gson:gson:2.7")
+	implementation("javax.xml.bind:jaxb-api:2.3.1")
+	implementation("commons-io:commons-io:2.11.0")
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	runtimeOnly("com.mysql:mysql-connector-j")
