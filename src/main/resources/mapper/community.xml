@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codebee.stylehive.community">
+
+	<sql id="commSelect">
+		select
+		c.comm_no commNo,
+		c.user_id userId,
+		c.comm_title commTitle,
+		c.comm_contents commContents,
+		c.comm_category commCategory,
+		c.comm_viewer commViewer,
+		c.comm_date commDate,
+		c.comm_update commUpdate,
+		c.comm_state commState,
+		(select count(comm_ment_no) from community_comment where c.comm_no = comm_no) commentCount,
+		(select count(comm_like_id) from community_like where c.comm_no = comm_no) likeCount,
+		u.user_img userImg
+	</sql>
+	
+	<sql id="commJoin">
+		left join community_tag_product ctp on c.comm_no = ctp.comm_no
+		left join user_info u on c.user_id = u.user_id
+	</sql>
+	<select id="selectByProductId" resultType="community" parameterType="map">
+		<include refid="commSelect"></include>
+		from community c
+		<include refid="commJoin"></include>
+		where ctp.product_id = #{productId}
+		order by c.comm_date desc
+	</select>
+
+	<select id="selectProductCateCount" resultType="int" parameterType="int">
+		select
+		count(c.comm_no)
+		from community c
+		<include refid="commJoin"></include>
+		left join product p on ctp.product_id = p.product_id
+		where p.product_cate_id = #{cateId}
+	</select>
+	<select id="selectProductCate" resultType="community" parameterType="map">
+		<include refid="commSelect"></include>
+		from community c
+		<include refid="commJoin"></include>
+		left join product p on ctp.product_id = p.product_id
+		where p.product_cate_id = #{cateId}
+		group by commNo
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+
+	<select id="countByProductId" resultType="int" parameterType="int">
+		select
+		count(c.comm_no)
+		from community c
+		left join community_tag_product ctp on c.comm_no = ctp.comm_no
+		where ctp.product_id = #{productId}
+	</select>
+
+	<select id="selectById" resultType="community" parameterType="int">
+		select
+		c.comm_no commNo,
+		c.user_id userId,
+		c.comm_title commTitle,
+		c.comm_contents commContents,
+		c.comm_category commCategory,
+		c.comm_viewer commViewer,
+		c.comm_date commDate,
+		c.comm_update commUpdate,
+		c.comm_state commState,
+		count(cc.comm_ment_no) commentCount,
+		count(cl.comm_no) likeCount,
+		u.user_img userImg
+		from community c
+		left join community_tag_product ctp on c.comm_no = ctp.comm_no
+		left join community_comment cc on c.comm_no = cc.comm_no
+		left join community_like cl on c.comm_no = cl.comm_no
+		left join user_info u on c.user_id = u.user_id
+		where c.comm_no = #{id}
+	</select>
+
+
+	<select id="selectImgById" resultType="imgThumb" parameterType="int">
+		select img_thumb_id imgThumbId, comm_no commNo, img_thumb_url imgThumbUrl, img_thumb_store imgThumbStore from img_thumb
+		where comm_no = #{id}
+	</select>
+
+	<select id="selectTagProductById" resultType="product" parameterType="int">
+		select
+		p.product_id productId,
+		pb.product_brand_eng_name productBrandEngName,
+		(select img_thumb_url from img_thumb where product_id = productId limit 1) imgUrl,
+		p.product_eng_name productEngName,
+		pt.tender_price nowBuyPrice
+		from community_tag_product ctp
+		join product p on p.product_id = ctp.product_id
+		join product_brand pb on pb.product_brand_id = p.product_brand_id
+		left join (select tender_price, product_id from product_tender pt where tender_flag = 1 order by tender_price asc limit 1) pt on ctp.product_id = pt.product_id
+		where ctp.comm_no = #{id}
+	</select>
+</mapper>
