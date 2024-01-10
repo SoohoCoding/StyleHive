@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @NoArgsConstructor
 public class FaqServiceImpl implements FaqService {
@@ -19,18 +21,7 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public Page<FaqEntity> getAllFaqs(Pageable pageable) {
-        return dao.getAllFaqs(pageable);
+    public List<FaqEntity> getAllFaqs() {
+        return dao.getAllFaqs();
     }
-
-    @Override
-    public Page<FaqEntity> getFaqsByCategory(String category, Pageable pageable) {
-        return dao.getFaqsByCategory(category, pageable);
-    }
-
-    @Override
-    public Page<FaqEntity> searchAllFaqs(String search, Pageable pageable) {
-        return dao.searchAllFaqs(search, pageable);
-    }
-
 }

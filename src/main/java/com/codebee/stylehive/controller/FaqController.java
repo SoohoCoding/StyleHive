@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @NoArgsConstructor
 @RequestMapping("/api/faq")
@@ -23,23 +25,9 @@ public class FaqController {
         this.service = service;
     }
 
-    @GetMapping
-    public Page<FaqEntity> getFaqsByCategory(@RequestParam(defaultValue = "전체") String category,
-                                             @RequestParam(required = false) String search,
-                                             @RequestParam(defaultValue = "1") int page) {
-        int size = 20;
-        Pageable pageable = PageRequest.of(page - 1, size);
-
-        if (search != null && !search.isEmpty()) {
-            // 검색어가 입력된 경우
-            return service.searchAllFaqs(search, pageable);
-        } else {
-            // 검색어가 입력되지 않은 경우
-            if (category == null || category.equals("전체")) {
-                return service.getAllFaqs(pageable);
-            } else {
-                return service.getFaqsByCategory(category, pageable);
-            }
-        }
+    @GetMapping("/all")
+    public List<FaqEntity> getAllFaqs() {
+        return service.getAllFaqs();
     }
+
 }

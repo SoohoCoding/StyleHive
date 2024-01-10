@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @NoArgsConstructor
 public class FaqDAOImpl implements FaqDAO {
@@ -19,18 +21,7 @@ public class FaqDAOImpl implements FaqDAO {
     };
 
     @Override
-    public Page<FaqEntity> getAllFaqs(Pageable pageable) {
-        return repo.findAll(pageable);
+    public List<FaqEntity> getAllFaqs() {
+        return repo.findAll();
     }
-
-    @Override
-    public Page<FaqEntity> getFaqsByCategory(String category, Pageable pageable) {
-        return repo.findByFaqCate(category, pageable);
-    }
-
-    @Override
-    public Page<FaqEntity> searchAllFaqs(String search, Pageable pageable) {
-        return repo.findByFaqTitleContainingOrFaqContentContaining(search, search, pageable);
-    }
-
 }
