@@ -30,6 +30,15 @@
 		<include refid="commJoin"></include>
 		where ctp.product_id = #{productId}
 		order by c.comm_date desc
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+
+	<select id="countByProductId" resultType="int" parameterType="int">
+		select
+		count(c.comm_no)
+		from community c
+		left join community_tag_product ctp on c.comm_no = ctp.comm_no
+		where ctp.product_id = #{productId}
 	</select>
 
 	<select id="selectProductCateCount" resultType="int" parameterType="int">
@@ -40,6 +49,7 @@
 		left join product p on ctp.product_id = p.product_id
 		where p.product_cate_id = #{cateId}
 	</select>
+
 	<select id="selectProductCate" resultType="community" parameterType="map">
 		<include refid="commSelect"></include>
 		from community c
@@ -50,12 +60,37 @@
 		limit #{startLimit}, #{sizeLimit}
 	</select>
 
-	<select id="countByProductId" resultType="int" parameterType="int">
+	<select id="selectProductBigCateCount" resultType="int" parameterType="java.util.List">
 		select
 		count(c.comm_no)
 		from community c
-		left join community_tag_product ctp on c.comm_no = ctp.comm_no
-		where ctp.product_id = #{productId}
+		<include refid="commJoin"></include>
+		left join product p on ctp.product_id = p.product_id
+		left join product_cate pc on p.product_cate_id = pc.product_cate_id
+		left join product_big_cate pbc on pc.product_big_cate_id = pbc.product_big_cate_id
+		<where>
+			pbc.product_big_cate_id IN
+			<foreach item="i" collection="list" open="(" separator="," close=")">
+				#{i}
+			</foreach>
+		</where>
+	</select>
+
+	<select id="selectProductBigCate" resultType="community" parameterType="map">
+		<include refid="commSelect"></include>
+		from community c
+		<include refid="commJoin"></include>
+		left join product p on ctp.product_id = p.product_id
+		left join product_cate pc on p.product_cate_id = pc.product_cate_id
+		left join product_big_cate pbc on pc.product_big_cate_id = pbc.product_big_cate_id
+		<where>
+			pbc.product_big_cate_id IN
+			<foreach item="i" collection="cateId" open="(" separator="," close=")">
+				#{i}
+			</foreach>
+		</where>
+		group by commNo
+		limit #{startLimit}, #{sizeLimit}
 	</select>
 
 	<select id="selectById" resultType="community" parameterType="int">
@@ -98,5 +133,26 @@
 		join product_brand pb on pb.product_brand_id = p.product_brand_id
 		left join (select tender_price, product_id from product_tender pt where tender_flag = 1 order by tender_price asc limit 1) pt on ctp.product_id = pt.product_id
 		where ctp.comm_no = #{id}
+	</select>
+
+	<select id="selectUserOrderByFollowCount" resultType="user" parameterType="map">
+		select
+		u.user_id userId,
+		u.user_img userImg,
+		(select count(uf.user_id) from user_follow uf where u.user_id = uf.user_id2) followCount
+		from user_info u
+		order by followCount desc
+		limit #{startLimit} , #{sizeLimit}
+	</select>
+
+	<select id="selectSummCommByUserId" resultType="community" parameterType="String">
+		select
+		c.comm_no commNo,
+		(select count(comm_like_id) from community_like cl where cl.comm_no = c.comm_no) likeCount,
+		(select it.img_thumb_url from img_thumb it where it.comm_no = c.comm_no limit 1) firstImage
+		from community c
+		where c.user_id = #{userId}
+		order by c.comm_date desc
+		limit 3
 	</select>
 </mapper>
