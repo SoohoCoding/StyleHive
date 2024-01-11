@@ -9,6 +9,10 @@ import java.util.List;
 
 public interface CommunityService {
     public CommunityDTO findById(int id);
-    public String findByProductIdWithCount(int productId, int limit);
+    public String findByProductIdWithCount(int productId, int size, int page);
     public String findByProductCate(int cateId, int size, int page);
+
+    public String findByProductBigCate(List<Integer> bigCateId, int size, int page);
+
+    public String findCommRankDate(int size, int page);
 }

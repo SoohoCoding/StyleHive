@@ -30,7 +30,7 @@ public class ViewController {
     }
 
     @RequestMapping("/api/get-image/{path}/{name}")
-    public ResponseEntity<UrlResource> getProductImage(@PathVariable String path, @PathVariable String name) throws MalformedURLException {
+    public ResponseEntity<UrlResource> getProductImage(@PathVariable(name="path") String path, @PathVariable(name="name") String name) throws MalformedURLException {
         UrlResource resource = new UrlResource("file:"+fileUpload.getUploadpath(path,name));
 
         return ResponseEntity.ok()
