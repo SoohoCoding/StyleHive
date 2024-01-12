@@ -21,13 +21,11 @@ public class ProductController {
         this.service = service;
     }
 
-    @GetMapping("/{productId}")
-    public ProductEntity getById(@PathVariable("productId") int productId) {
-        System.out.println(
-                service.findById(productId).getProductSize()
-        );
-        return service.findById(productId);
-    }
-
-
+//    @GetMapping("/{productId}")
+//    public ProductEntity getById(@PathVariable("productId") int productId) {
+//        System.out.println(
+//                service.findById(productId).getProductSize()
+//        );
+//        return service.findById(productId);
+//    }
 }

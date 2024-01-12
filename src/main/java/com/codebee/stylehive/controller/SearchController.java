@@ -1,28 +1,36 @@
 package com.codebee.stylehive.controller;
 
-import com.codebee.stylehive.jpa.entity.ProductEntity;
-import com.codebee.stylehive.service.ProductService;
+
+import com.codebee.stylehive.service.SearchService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @NoArgsConstructor
 @RequestMapping("/api/search")
 public class SearchController {
-    ProductService productService;
+    SearchService service;
 
     @Autowired
-    public SearchController(ProductService productService) {
-        this.productService = productService;
+    public SearchController(SearchService service) {
+        this.service = service;
     }
 
-    @GetMapping("/products")
-    public Page<ProductEntity> searchProducts(@RequestParam String keyword, @RequestParam int page, @RequestParam int size) {
-        return productService.searchProducts(keyword, page, size);
+    @GetMapping
+    public Object search(@RequestParam String keyword, @RequestParam(defaultValue = "products") String tab) {
+
+        if ("users".equals(tab)) {
+            return service.searchUsers(keyword);
+        } else if ("communities".equals(tab)) {
+            return service.searchCommunities(keyword);
+        } else {
+            return service.searchProducts(keyword);
+        }
     }
 }

@@ -4,7 +4,6 @@ import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.repository.ProductDAO;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,9 +22,4 @@ public class ProductServiceImpl implements ProductService {
         return dao.findById(id);
     }
 
-    // 상품 검색 기능
-    @Override
-    public Page<ProductEntity> searchProducts(String keyword, int page, int size) {
-        return dao.searchProducts(keyword, page*size, size);
-    }
 }

@@ -16,12 +16,13 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int productId;
     int productCateId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productBrandId", referencedColumnName = "productBrandId")
+    private ProductBrandEntity productBrand; // 브랜드 엔터티 참조
     String productEngName;
     String productKorName;
     String productRelease;
-    String productBrand;
     String productColor;
-    String productSize;
     String productModelNum;
     Date productDate;
     boolean productState;

@@ -12,13 +12,13 @@ import org.apache.ibatis.type.Alias;
 public class ProductDTO {
     private int productId;
     private int productCateId;
+    private String productBrandId;
     private String productEngName;
     private String productKorName;
-    private String productRelease;
-    private String productBrand;
+    private int productRelease;
     private String productColor;
     private String productSize;
     private String productModelNum;
     private String productDate;
-    private String productState;
+    private boolean productState;
 }
