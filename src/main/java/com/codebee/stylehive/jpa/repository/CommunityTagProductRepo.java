@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CommunityTagProductRepo extends JpaRepository<CommunityTagProductEntity, Integer> {
-    List<CommunityTagProductEntity> findCommunityIdsByProduct_ProductIdIn(List<Integer> productIds);
+    List<CommunityTagProductEntity> findByProduct_ProductIdIn(List<Integer> productIds);
 }

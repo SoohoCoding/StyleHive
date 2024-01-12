@@ -57,10 +57,25 @@ public class SearchDAOImpl implements SearchDAO {
     // 커뮤니티 검색 기능
     @Override
     public List<CommunityEntity> searchCommunities(String keyword) {
-        List<Integer> commNosFromTag = Collections.emptyList();
+        // 1. 상품 태그
+        // 브랜드명으로 검색하여 brandIds를 가져옴
+        List<ProductBrandEntity> brandEntities = productBrandRepo.findByProductBrandEngNameContainingOrProductBrandKorNameContaining(keyword, keyword);
 
-        // 태그 테이블에서 keyword와 일치하는 태그를 찾음
+        // brandIds를 추출하여 해당 브랜드의 상품을 검색
+        List<Integer> brandIds = brandEntities.stream().map(ProductBrandEntity::getProductBrandId).collect(Collectors.toList());
+
+        // 검색된 상품의 productId를 사용하여 communityTagProduct 테이블에서 comm_no를 찾음
+        List<Integer> commNosFromProduct = communityTagProductRepo.findByProduct_ProductIdIn(
+                        productRepo.findByProductEngNameContainingOrProductKorNameContainingOrProductBrand_ProductBrandIdIn(
+                                keyword, keyword, brandIds
+                        ).stream().map(ProductEntity::getProductId).collect(Collectors.toList())
+                ).stream()
+                .map(CommunityTagProductEntity -> CommunityTagProductEntity.getCommunity().getCommNo())
+                .collect(Collectors.toList());
+
+        // 2. 태그 테이블에서 keyword와 일치하는 태그를 찾음
         TagEntity tag = tagRepo.findByTagName(keyword);
+        List<Integer> commNosFromTag = Collections.emptyList();
 
         if (tag != null) {
             // 찾은 태그의 tag_id와 일치하는 comm_tag 테이블의 comm_no 리스트를 찾음
@@ -69,7 +84,7 @@ public class SearchDAOImpl implements SearchDAO {
                     .collect(Collectors.toList());
         }
 
-        // commTitle이나 commContents에서 keyword를 포함하는 커뮤니티를 찾음
+        // 3. commTitle이나 commContents에서 keyword를 포함하는 커뮤니티를 찾음
         List<Integer> commNosFromContent = communityRepo.findByCommTitleContainingOrCommContentsContaining(keyword, keyword)
                 .stream()
                 .map(CommunityEntity::getCommNo)
@@ -79,6 +94,7 @@ public class SearchDAOImpl implements SearchDAO {
         Set<Integer> combinedCommNos = new HashSet<>();
         combinedCommNos.addAll(commNosFromTag);
         combinedCommNos.addAll(commNosFromContent);
+        combinedCommNos.addAll(commNosFromProduct);
 
         // 합쳐진 comm_no와 일치하는 community 테이블의 커뮤니티를 찾음
         List<Integer> finalCommNos = new ArrayList<>(combinedCommNos);
