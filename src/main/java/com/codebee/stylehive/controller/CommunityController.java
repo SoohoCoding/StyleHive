@@ -1,6 +1,7 @@
 package com.codebee.stylehive.controller;
 
 import com.codebee.stylehive.dto.CommunityDTO;
+import com.codebee.stylehive.dto.TagDTO;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.service.CommunityService;
 import lombok.NoArgsConstructor;
@@ -44,5 +45,15 @@ public class CommunityController {
     @GetMapping("rank/{size}/{page}")
     public String getRankData(@PathVariable("size")int size, @PathVariable("page")int page) {
         return service.findCommRankDate(size, page);
+    }
+
+    @GetMapping("best-tag/{limit}")
+    public List<TagDTO> getBestTag(@PathVariable("limit") int limit) {
+        return service.findBestTag(limit);
+    }
+
+    @GetMapping("/tag/{size}/{page}")
+    public String getByTagId(@RequestParam(name = "tagId") List<Integer> tagId, @PathVariable("size")int size, @PathVariable("page")int page) {
+        return service.findByTagId(tagId, size, page);
     }
 }
