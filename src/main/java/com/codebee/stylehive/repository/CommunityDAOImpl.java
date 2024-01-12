@@ -2,6 +2,7 @@ package com.codebee.stylehive.repository;
 
 import com.codebee.stylehive.dto.CommunityDTO;
 import com.codebee.stylehive.dto.ProductDTO;
+import com.codebee.stylehive.dto.TagDTO;
 import com.codebee.stylehive.dto.UserInfoDTO;
 import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
@@ -93,6 +94,29 @@ public class CommunityDAOImpl implements CommunityDAO {
     @Override
     public List<CommunityDTO> findSummCommByUserId(String userId) {
         return ss.selectList("com.codebee.stylehive.community.selectSummCommByUserId", userId);
+    }
+
+    @Override
+    public List<TagDTO> findTagByCommId(int commNo) {
+        return ss.selectList("com.codebee.stylehive.community.selectTagByCommId", commNo);
+    }
+
+    @Override
+    public List<TagDTO> findBestTag(int limit) {
+        return ss.selectList("com.codebee.stylehive.community.selectBestTag", limit);
+    }
+
+    @Override
+    public int findByTagIdCount(List<Integer> tagId) {
+        return ss.selectOne("com.codebee.stylehive.community.countByTagId", tagId);
+    }
+
+    @Override
+    public List<CommunityDTO> findByTagId(List<Integer> tagId, int size, int page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("tagId", tagId);
+        Util.addPageParam(map, size, page);
+        return ss.selectList("com.codebee.stylehive.community.selectByTagId",map);
     }
 
 

@@ -2,6 +2,7 @@ package com.codebee.stylehive.service;
 
 import com.codebee.stylehive.dto.CommunityDTO;
 import com.codebee.stylehive.dto.ProductDTO;
+import com.codebee.stylehive.dto.TagDTO;
 import com.codebee.stylehive.dto.UserInfoDTO;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.repository.CommunityDAO;
@@ -31,6 +32,7 @@ public class CommunityServiceImpl implements CommunityService {
         CommunityDTO result = dao.findById(id);
         result.setImgList(dao.findImgByCommId(id));
         result.setTagProductList(dao.findTagProductByCommId(id));
+        result.setTagList(dao.findTagByCommId(id));
         return result;
     }
 
@@ -105,6 +107,30 @@ public class CommunityServiceImpl implements CommunityService {
         Map<String, Object> map = new HashMap<>();
         map.put("rankData", users);
         map.put("hasNextPage", hasNextPage);
+        return new Gson().toJson(map);
+    }
+
+    @Override
+    public List<TagDTO> findBestTag(int limit) {
+        return dao.findBestTag(limit);
+    }
+
+    @Override
+    public String findByTagId(List<Integer> tagId, int size, int page) {
+        List<CommunityDTO> result = dao.findByTagId(tagId, size, page);
+        if(result != null) {
+            result.forEach(i -> {
+                i.setImgList(dao.findImgByCommId(i.getCommNo()));
+            });
+        }
+
+        int count = dao.findByTagIdCount(tagId);
+        boolean hasNextPage = count - (size * page) > 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("commList", result);
+        map.put("hasNextPage", hasNextPage);
+
         return new Gson().toJson(map);
     }
 

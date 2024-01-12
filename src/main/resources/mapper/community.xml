@@ -93,6 +93,45 @@
 		limit #{startLimit}, #{sizeLimit}
 	</select>
 
+	<select id="countByTagId" resultType="int" parameterType="java.util.List">
+		select
+		count(*)
+		from
+		(
+			select c.comm_no
+			from community c
+			<include refid="commJoin"></include>
+			left join product p on ctp.product_id = p.product_id
+			left join product_cate pc on p.product_cate_id = pc.product_cate_id
+			join comm_tag ct on c.comm_no = ct.comm_no
+			<where>
+				ct.tag_id IN
+				<foreach item="i" collection="list" open="(" separator="," close=")">
+					#{i}
+				</foreach>
+			</where>
+			group by c.comm_no
+		) r
+	</select>
+
+
+	<select id="selectByTagId" resultType="community" parameterType="map">
+		<include refid="commSelect"></include>
+		from community c
+		<include refid="commJoin"></include>
+		left join product p on ctp.product_id = p.product_id
+		left join product_cate pc on p.product_cate_id = pc.product_cate_id
+		join comm_tag ct on c.comm_no = ct.comm_no
+		<where>
+			ct.tag_id IN
+			<foreach item="i" collection="tagId" open="(" separator="," close=")">
+				#{i}
+			</foreach>
+		</where>
+		group by c.comm_no
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+
 	<select id="selectById" resultType="community" parameterType="int">
 		select
 		c.comm_no commNo,
@@ -154,5 +193,22 @@
 		where c.user_id = #{userId}
 		order by c.comm_date desc
 		limit 3
+	</select>
+
+	<select id="selectTagByCommId" resultType="tag" parameterType="int">
+		select t.tag_id tagId, t.tag_name tagName
+		from comm_tag ct
+		join tag t on ct.tag_id = t.tag_id
+		where ct.comm_no = #{commNo}
+	</select>
+
+	<select id="selectBestTag" resultType="tag" parameterType="int">
+		select
+		t.tag_id tagId,
+		t.tag_name tagName,
+		(select count(ct.tag_id) from comm_tag ct where ct.tag_id = t.tag_id) tagCount
+		from tag t
+		order by tagCount desc
+		limit #{limit}
 	</select>
 </mapper>
