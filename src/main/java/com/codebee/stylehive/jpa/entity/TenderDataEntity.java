@@ -17,6 +17,7 @@ public class TenderDataEntity {
     int productId;
     int dealId;
     int tenderNum;
+    String userId;
     int tenderPrice;
-    int field;
+    int tenderRecentPrice;
 }
