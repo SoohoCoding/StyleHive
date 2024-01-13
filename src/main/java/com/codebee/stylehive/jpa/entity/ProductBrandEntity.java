@@ -19,5 +19,4 @@ public class ProductBrandEntity {
     String productBrandEngName;
     String productBrandKorName;
     String productBrandImg;
-
 }

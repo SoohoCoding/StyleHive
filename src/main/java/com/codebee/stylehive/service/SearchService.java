@@ -7,6 +7,7 @@ import com.codebee.stylehive.jpa.entity.CommunityEntity;
 import java.util.List;
 
 public interface SearchService {
+
     // 상품 검색 기능
     List<ProductEntity> searchProducts(String keyword);
 
