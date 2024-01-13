@@ -1,9 +1,6 @@
 package com.codebee.stylehive.repository;
 
-import com.codebee.stylehive.dto.CommunityDTO;
-import com.codebee.stylehive.dto.ProductDTO;
-import com.codebee.stylehive.dto.TagDTO;
-import com.codebee.stylehive.dto.UserInfoDTO;
+import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 
@@ -32,4 +29,16 @@ public interface CommunityDAO {
     public int findByTagIdCount(List<Integer> tagId);
 
     public List<CommunityDTO> findByTagId (List<Integer> tagId, int size, int page);
+
+    public List<CommunityCommentDTO> findCommentByCommId (int commId, int size, int page);
+    public int findCommentByCommIdCount (int commId);
+    public List<CommunityCommentDTO> findNestedComment(int mentNo);
+
+    public UserInfoDTO findCommUserById(String userId);
+
+    public List<CommunityDTO> findByUserId(String userId, int size, int page);
+    public int findByUserIdCount(String userId);
+
+    public List<CommunityDTO> findByFollow(String userId, int size, int page);
+    public int findByFollowCount(String userId);
 }

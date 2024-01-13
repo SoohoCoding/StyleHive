@@ -1,9 +1,6 @@
 package com.codebee.stylehive.service;
 
-import com.codebee.stylehive.dto.CommunityDTO;
-import com.codebee.stylehive.dto.ProductDTO;
-import com.codebee.stylehive.dto.TagDTO;
-import com.codebee.stylehive.dto.UserInfoDTO;
+import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.repository.CommunityDAO;
 import com.google.gson.Gson;
@@ -33,6 +30,7 @@ public class CommunityServiceImpl implements CommunityService {
         result.setImgList(dao.findImgByCommId(id));
         result.setTagProductList(dao.findTagProductByCommId(id));
         result.setTagList(dao.findTagByCommId(id));
+        result.setCommentList(dao.findCommentByCommId(id, 2, 1));
         return result;
     }
 
@@ -125,6 +123,71 @@ public class CommunityServiceImpl implements CommunityService {
         }
 
         int count = dao.findByTagIdCount(tagId);
+        boolean hasNextPage = count - (size * page) > 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("commList", result);
+        map.put("hasNextPage", hasNextPage);
+
+        return new Gson().toJson(map);
+    }
+
+    @Override
+    public String findCommentByCommId(int commId, int size, int page) {
+        List<CommunityCommentDTO> result = dao.findCommentByCommId(commId, size, page);
+
+        if(result.size() > 0) {
+            result.forEach(i -> {
+                i.setNestedList(dao.findNestedComment(i.getCommMentNo()));
+            });
+        }
+
+        int count = dao.findCommentByCommIdCount(commId);
+        boolean hasNextPage = count - (size * page) > 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("mentList", result);
+        map.put("hasNextPage", hasNextPage);
+
+        return new Gson().toJson(map);
+    }
+
+    @Override
+    public UserInfoDTO findCommUserById(String userId) {
+        return dao.findCommUserById(userId);
+    }
+
+    @Override
+    public String findByUserId(String userId, int size, int page) {
+        List<CommunityDTO> result = dao.findByUserId(userId, size, page);
+
+        if(result != null) {
+            result.forEach(i -> {
+                i.setImgList(dao.findImgByCommId(i.getCommNo()));
+            });
+        }
+
+        int count = dao.findByUserIdCount(userId);
+        boolean hasNextPage = count - (size * page) > 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("commList", result);
+        map.put("hasNextPage", hasNextPage);
+
+        return new Gson().toJson(map);
+    }
+
+    @Override
+    public String findByFollow(String userId, int size, int page) {
+        List<CommunityDTO> result = dao.findByFollow(userId, size, page);
+
+        if(result != null) {
+            result.forEach(i -> {
+                i.setImgList(dao.findImgByCommId(i.getCommNo()));
+            });
+        }
+
+        int count = dao.findByFollowCount(userId);
         boolean hasNextPage = count - (size * page) > 0;
 
         Map<String, Object> map = new HashMap<>();

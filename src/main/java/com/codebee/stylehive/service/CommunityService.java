@@ -1,9 +1,6 @@
 package com.codebee.stylehive.service;
 
-import com.codebee.stylehive.dto.CommunityDTO;
-import com.codebee.stylehive.dto.ProductDTO;
-import com.codebee.stylehive.dto.ProductDealDTO;
-import com.codebee.stylehive.dto.TagDTO;
+import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 
 import java.util.List;
@@ -19,4 +16,10 @@ public interface CommunityService {
     public List<TagDTO> findBestTag(int limit);
 
     public String findByTagId (List<Integer> tagId, int size, int page);
+    public String findCommentByCommId (int commId, int size, int page);
+
+    public UserInfoDTO findCommUserById(String userId);
+    public String findByUserId(String userId, int size, int page);
+
+    public String findByFollow(String userId, int size, int page);
 }

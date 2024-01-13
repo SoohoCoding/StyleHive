@@ -31,6 +31,7 @@ public class CommunityDTO {
     List<ImgThumbEntity> imgList = new ArrayList<>();
     List<ProductDTO> tagProductList = new ArrayList<>();
     List<TagDTO> tagList = new ArrayList<>();
+    List<CommunityCommentDTO> commentList = new ArrayList<>();
     String firstImage;
     String userImg;
 }

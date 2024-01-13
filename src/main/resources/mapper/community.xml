@@ -24,6 +24,27 @@
 		left join community_tag_product ctp on c.comm_no = ctp.comm_no
 		left join user_info u on c.user_id = u.user_id
 	</sql>
+
+	<select id="selectById" resultType="community" parameterType="int">
+		select
+		c.comm_no commNo,
+		c.user_id userId,
+		c.comm_title commTitle,
+		c.comm_contents commContents,
+		c.comm_category commCategory,
+		c.comm_viewer commViewer,
+		c.comm_date commDate,
+		c.comm_update commUpdate,
+		c.comm_state commState,
+		(select count(*) from community_comment cc where cc.comm_no = c.comm_no) commentCount,
+		(select count(*) from community_like cl where cl.comm_no = c.comm_no) likeCount,
+		u.user_img userImg
+		from community c
+		left join user_info u on c.user_id = u.user_id
+		where c.comm_no = #{id}
+	</select>
+
+
 	<select id="selectByProductId" resultType="community" parameterType="map">
 		<include refid="commSelect"></include>
 		from community c
@@ -132,29 +153,6 @@
 		limit #{startLimit}, #{sizeLimit}
 	</select>
 
-	<select id="selectById" resultType="community" parameterType="int">
-		select
-		c.comm_no commNo,
-		c.user_id userId,
-		c.comm_title commTitle,
-		c.comm_contents commContents,
-		c.comm_category commCategory,
-		c.comm_viewer commViewer,
-		c.comm_date commDate,
-		c.comm_update commUpdate,
-		c.comm_state commState,
-		count(cc.comm_ment_no) commentCount,
-		count(cl.comm_no) likeCount,
-		u.user_img userImg
-		from community c
-		left join community_tag_product ctp on c.comm_no = ctp.comm_no
-		left join community_comment cc on c.comm_no = cc.comm_no
-		left join community_like cl on c.comm_no = cl.comm_no
-		left join user_info u on c.user_id = u.user_id
-		where c.comm_no = #{id}
-	</select>
-
-
 	<select id="selectImgById" resultType="imgThumb" parameterType="int">
 		select img_thumb_id imgThumbId, comm_no commNo, img_thumb_url imgThumbUrl, img_thumb_store imgThumbStore from img_thumb
 		where comm_no = #{id}
@@ -210,5 +208,85 @@
 		from tag t
 		order by tagCount desc
 		limit #{limit}
+	</select>
+
+
+	<sql id="commentBycommIdCondition">
+		where cc.comm_no = #{commId} and
+		cc.comm_ment_group_no is null and
+		cc.comm_ment_state = 1
+	</sql>
+	<select id="selectCommentByCommId" resultType="commComment" parameterType="map">
+		select
+		cc.*,
+		u.user_img userImg
+		from community_comment cc
+		join user_info u on cc.user_id = u.user_id
+		<include refid="commentBycommIdCondition"></include>
+		order by cc.comm_ment_date desc
+		limit #{startLimit} , #{sizeLimit}
+	</select>
+
+	<select id="selectCommentByCommIdCount" resultType="int" parameterType="int">
+		select count(comm_no)
+		from community_comment cc
+		<include refid="commentBycommIdCondition"></include>
+	</select>
+
+	<select id="selectNestedComment" resultType="commComment" parameterType="int">
+		select
+		cc.*,
+		u.user_img userImg
+		from community_comment cc
+		join user_info u on cc.user_id = u.user_id
+		where cc.comm_ment_group_no = #{mentNo} and cc.comm_ment_state = 1
+		order by cc.comm_ment_date desc
+	</select>
+
+	<select id="selectCommUserById" resultType="user" parameterType="String">
+		select
+		u.user_id,
+		u.user_name,
+		u.user_nickname,
+		u.user_introduce,
+		u.user_img,
+		(select count(*) from user_follow uf where uf.user_id = u.user_id) followCount,
+		(select count(*) from user_follow uf where uf.user_id2 = u.user_id) followedCount,
+		(select count(*) from community c where c.user_id = u.user_id) communityCount,
+		(select count(*) from community_tag_product ctp join community cc on ctp.comm_no = cc.comm_no where cc.user_id = u.user_id)  productCount
+		from user_info u
+		where user_id = #{userId}
+	</select>
+
+	<select id="selectByUserIdCount" resultType="int" parameterType="map">
+		select
+		count(c.comm_no)
+		from community c
+		where c.user_id = #{userId}
+	</select>
+
+	<select id="selectByUserId" resultType="community" parameterType="map">
+		<include refid="commSelect"></include>
+		from community c
+		left join user_info u on c.user_id = u.user_id
+		where c.user_id = #{userId}
+		order by c.comm_date desc
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+
+	<select id="selectByFollow" resultType="community" parameterType="map">
+		<include refid="commSelect"></include>
+		from community c
+		left join user_info u on c.user_id = u.user_id
+		where c.user_id in (select uf.user_id2 from user_follow uf where uf.user_id = #{userId})
+		order by c.comm_date desc
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+	<select id="selectByFollowCount" resultType="int" parameterType="String">
+		select
+		count(*)
+		from community c
+		left join user_info u on c.user_id = u.user_id
+		where c.user_id in (select uf.user_id2 from user_follow uf where uf.user_id = #{userId})
 	</select>
 </mapper>
