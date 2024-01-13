@@ -1,9 +1,6 @@
 package com.codebee.stylehive.repository;
 
-import com.codebee.stylehive.dto.CommunityDTO;
-import com.codebee.stylehive.dto.ProductDTO;
-import com.codebee.stylehive.dto.TagDTO;
-import com.codebee.stylehive.dto.UserInfoDTO;
+import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.jpa.repository.CommunityRepo;
@@ -117,6 +114,55 @@ public class CommunityDAOImpl implements CommunityDAO {
         map.put("tagId", tagId);
         Util.addPageParam(map, size, page);
         return ss.selectList("com.codebee.stylehive.community.selectByTagId",map);
+    }
+
+    @Override
+    public List<CommunityCommentDTO> findCommentByCommId(int commId, int size, int page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("commId", commId);
+        Util.addPageParam(map, size, page);
+        return ss.selectList("com.codebee.stylehive.community.selectCommentByCommId", map);
+    }
+
+    @Override
+    public int findCommentByCommIdCount(int commId) {
+        return ss.selectOne("com.codebee.stylehive.community.selectCommentByCommIdCount", commId);
+    }
+
+    @Override
+    public List<CommunityCommentDTO> findNestedComment(int mentNo) {
+        return ss.selectList("com.codebee.stylehive.community.selectNestedComment", mentNo);
+    }
+
+    @Override
+    public UserInfoDTO findCommUserById(String userId) {
+        return ss.selectOne("com.codebee.stylehive.community.selectCommUserById", userId);
+    }
+
+    @Override
+    public List<CommunityDTO> findByUserId(String userId, int size, int page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userId", userId);
+        Util.addPageParam(map, size, page);
+        return ss.selectList("com.codebee.stylehive.community.selectByUserId", map);
+    }
+
+    @Override
+    public int findByUserIdCount(String userId) {
+        return ss.selectOne("com.codebee.stylehive.community.selectByUserIdCount", userId);
+    }
+
+    @Override
+    public List<CommunityDTO> findByFollow(String userId, int size, int page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("userId", userId);
+        Util.addPageParam(map, size, page);
+        return ss.selectList("com.codebee.stylehive.community.selectByFollow", map);
+    }
+
+    @Override
+    public int findByFollowCount(String userId) {
+        return ss.selectOne("com.codebee.stylehive.community.selectByFollowCount", userId);
     }
 
 

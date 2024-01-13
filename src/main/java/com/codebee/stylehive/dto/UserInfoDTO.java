@@ -32,4 +32,7 @@ public class UserInfoDTO {
 
     List<CommunityDTO> commList = new ArrayList<>();
     int followCount;
+    int followedCount;
+    int communityCount;
+    int productCount;
 }

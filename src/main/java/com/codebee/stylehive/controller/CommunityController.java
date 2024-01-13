@@ -2,6 +2,7 @@ package com.codebee.stylehive.controller;
 
 import com.codebee.stylehive.dto.CommunityDTO;
 import com.codebee.stylehive.dto.TagDTO;
+import com.codebee.stylehive.dto.UserInfoDTO;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.service.CommunityService;
 import lombok.NoArgsConstructor;
@@ -55,5 +56,26 @@ public class CommunityController {
     @GetMapping("/tag/{size}/{page}")
     public String getByTagId(@RequestParam(name = "tagId") List<Integer> tagId, @PathVariable("size")int size, @PathVariable("page")int page) {
         return service.findByTagId(tagId, size, page);
+    }
+
+    @GetMapping("/comment/{commId}/{size}/{page}")
+    public String getCommentByCommId (@PathVariable("commId") int commId, @PathVariable("size") int size, @PathVariable("page") int page) {
+        return service.findCommentByCommId(commId, size, page);
+    }
+
+    @GetMapping("/find-user/{userId}")
+    public UserInfoDTO getUserById (@PathVariable("userId")String userId) {
+        return service.findCommUserById(userId);
+    }
+
+    @GetMapping("/uid/{userId}/{size}/{page}")
+    public String getByUserId (@PathVariable("userId") String userId, @PathVariable("size") int size, @PathVariable("page") int page) {
+        return service.findByUserId(userId,size, page);
+    }
+
+    @GetMapping("/follow/{size}/{page}")
+    public String getByFollow (@PathVariable("size") int size, @PathVariable("page") int page) {
+        //TODO log-in 처리 이후에 userId값을 로그인 정보에서 받아와야함.
+        return service.findByFollow("test",size, page);
     }
 }
