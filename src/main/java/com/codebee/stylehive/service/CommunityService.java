@@ -1,6 +1,7 @@
 package com.codebee.stylehive.service;
 
 import com.codebee.stylehive.dto.*;
+import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 
 import java.util.List;
@@ -22,4 +23,5 @@ public interface CommunityService {
     public String findByUserId(String userId, int size, int page);
 
     public String findByFollow(String userId, int size, int page);
+    public String insertComment(CommunityCommentEntity comment);
 }

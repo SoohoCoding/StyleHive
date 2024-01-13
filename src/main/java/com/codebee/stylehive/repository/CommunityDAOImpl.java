@@ -2,7 +2,9 @@ package com.codebee.stylehive.repository;
 
 import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
+import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
+import com.codebee.stylehive.jpa.repository.CommunityCommentRepo;
 import com.codebee.stylehive.jpa.repository.CommunityRepo;
 import com.codebee.stylehive.util.Util;
 import lombok.NoArgsConstructor;
@@ -19,11 +21,13 @@ import java.util.Map;
 public class CommunityDAOImpl implements CommunityDAO {
 
     CommunityRepo repo;
+    CommunityCommentRepo commentRepo;
     SqlSession ss;
 
     @Autowired
-    public CommunityDAOImpl(CommunityRepo repo, SqlSession ss) {
+    public CommunityDAOImpl(CommunityRepo repo, CommunityCommentRepo commentRepo, SqlSession ss) {
         this.repo = repo;
+        this.commentRepo = commentRepo;
         this.ss = ss;
     }
 
@@ -163,6 +167,11 @@ public class CommunityDAOImpl implements CommunityDAO {
     @Override
     public int findByFollowCount(String userId) {
         return ss.selectOne("com.codebee.stylehive.community.selectByFollowCount", userId);
+    }
+
+    @Override
+    public CommunityCommentEntity insertComment(CommunityCommentEntity comment) {
+        return commentRepo.save(comment);
     }
 
 

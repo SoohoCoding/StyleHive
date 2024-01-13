@@ -3,6 +3,7 @@ package com.codebee.stylehive.controller;
 import com.codebee.stylehive.dto.CommunityDTO;
 import com.codebee.stylehive.dto.TagDTO;
 import com.codebee.stylehive.dto.UserInfoDTO;
+import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.service.CommunityService;
 import lombok.NoArgsConstructor;
@@ -77,5 +78,12 @@ public class CommunityController {
     public String getByFollow (@PathVariable("size") int size, @PathVariable("page") int page) {
         //TODO log-in 처리 이후에 userId값을 로그인 정보에서 받아와야함.
         return service.findByFollow("test",size, page);
+    }
+
+    @PostMapping("/comment/write")
+    public String writeComment(@RequestBody CommunityCommentEntity comment) {
+        //TODO log - in
+        comment.setUserId("test");
+        return service.insertComment(comment);
     }
 }
