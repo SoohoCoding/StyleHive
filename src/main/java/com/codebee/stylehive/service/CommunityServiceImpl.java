@@ -1,8 +1,10 @@
 package com.codebee.stylehive.service;
 
 import com.codebee.stylehive.dto.*;
+import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.repository.CommunityDAO;
+import com.codebee.stylehive.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.NoArgsConstructor;
@@ -193,6 +195,17 @@ public class CommunityServiceImpl implements CommunityService {
         Map<String, Object> map = new HashMap<>();
         map.put("commList", result);
         map.put("hasNextPage", hasNextPage);
+
+        return new Gson().toJson(map);
+    }
+
+    @Override
+    public String insertComment(CommunityCommentEntity comment) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        CommunityCommentEntity result = dao.insertComment(comment);
+        boolean success = result != null ? true : false;
+        if(success) map.put("comment", result);
+        map.put("message", success ? "success" : "fail");
 
         return new Gson().toJson(map);
     }

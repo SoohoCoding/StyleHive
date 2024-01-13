@@ -21,7 +21,7 @@ public class CommunityCommentEntity {
     String commMentContents;
     Timestamp commMentDate;
     Timestamp commMentUpdate;
-    int commMentGroupNo;
-    int commMentOrderNo;
+    Integer commMentGroupNo;
+    Integer commMentOrderNo;
     boolean commMentState;
 }
