@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,5 +18,5 @@ public class PushAlarmEntity {
     private int PushAlarmId;
     private String userId;
     private String pushAlarmContent;
-    private String pushAlarmDate;
+    private Timestamp pushAlarmDate;
 }

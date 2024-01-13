@@ -18,11 +18,10 @@ public class InquiryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int inqNo;
     int dealId;
-    int productId;
     String userId;
     String inqTitle;
-    String inq_contents;
-    Date inq_date;
-    Date inq_update;
+    String inqContents;
+    Date inqDate;
+    Date inqUpdate;
     String id;
 }

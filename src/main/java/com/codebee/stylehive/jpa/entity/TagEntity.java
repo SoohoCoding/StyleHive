@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int tagNo;
+    int tagId;
     String tagName;
 }
