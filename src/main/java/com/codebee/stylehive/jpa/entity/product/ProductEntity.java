@@ -4,6 +4,7 @@ import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -28,10 +29,11 @@ public class ProductEntity {
     String productModelNum;
     Date productDate;
     boolean productState;
+    public boolean getProductState() {return this.productState;}
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productBrandId", referencedColumnName = "productBrandId")
-    private ProductBrandEntity productBrand; // 브랜드 엔터티 참조
+    private ProductBrandEntity productBrand;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")

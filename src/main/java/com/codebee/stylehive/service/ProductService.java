@@ -7,7 +7,7 @@ import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import java.util.List;
 
 public interface ProductService {
-    public ProductEntity findById(int id);
+    public ProductDTO findById(int id);
     public List<ProductDealDTO> findAllProductDealByProductId(int productId);
     public List<ProductDTO> findProductByBrandOrderByDealCount(int brandId, int limit, int currentProductId);
 }
