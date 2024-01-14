@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_info")
 public class UserInfoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userId;
     private String userPass;
     private String userName;
@@ -31,4 +30,8 @@ public class UserInfoEntity {
     private boolean userState;
     private boolean userInformation;
 
+    // userId를 받는 생성자 추가
+    public UserInfoEntity(String userId) {
+        this.userId = userId;
+    }
 }
