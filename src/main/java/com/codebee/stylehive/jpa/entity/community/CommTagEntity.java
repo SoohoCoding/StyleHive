@@ -1,6 +1,6 @@
 package com.codebee.stylehive.jpa.entity.community;
 
-import com.codebee.stylehive.jpa.entity.product.ProductEntity;
+import com.codebee.stylehive.jpa.entity.TagEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,17 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "community_tag_product")
-public class CommunityTagProductEntity {
+@Table(name = "comm_tag")
+public class CommTagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int commProductId;
+    int commTagNo;
 
     @ManyToOne
-    @JoinColumn(name = "comm_no", nullable = false)
+    @JoinColumn(name = "comm_no", insertable = false, updatable = false)
     private CommunityEntity community;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
+    @JoinColumn(name = "tag_id")
+    private TagEntity tag;
+
 }

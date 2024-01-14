@@ -3,6 +3,9 @@ package com.codebee.stylehive.jpa.repository;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CommunityRepo extends JpaRepository<CommunityEntity, Integer> {
+import java.util.List;
 
+public interface CommunityRepo  extends JpaRepository<CommunityEntity, Integer> {
+    List<CommunityEntity> findByCommNoIn(List<Integer> commNos);
+    List<CommunityEntity> findByCommTitleContainingOrCommContentsContaining(String keyword1, String keyword2);
 }
