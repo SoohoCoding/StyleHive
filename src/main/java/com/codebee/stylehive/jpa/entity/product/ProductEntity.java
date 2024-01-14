@@ -21,7 +21,6 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int productId;
     int productCateId;
-    int productBrandId;
     String productEngName;
     String productKorName;
     String productRelease;
@@ -30,9 +29,9 @@ public class ProductEntity {
     Date productDate;
     boolean productState;
 
-    @ManyToOne
-    @JoinColumn(name = "productBrandId", insertable = false, updatable = false)
-    private ProductBrandEntity brand;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productBrandId", referencedColumnName = "productBrandId")
+    private ProductBrandEntity productBrand; // 브랜드 엔터티 참조
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
