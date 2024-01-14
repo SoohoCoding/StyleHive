@@ -25,5 +25,5 @@ public class ProductDealEntity {
     int dealPrice;
     Timestamp dealDate;
     int dealInspectionId;
-    int couId;
+    Integer couId;
 }

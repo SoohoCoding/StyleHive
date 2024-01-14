@@ -1,5 +1,6 @@
 package com.codebee.stylehive.service;
 
+import com.codebee.stylehive.dto.ProductDTO;
 import com.codebee.stylehive.dto.ProductDealDTO;
 import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.repository.ProductDAO;
@@ -28,5 +29,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDealDTO> findAllProductDealByProductId(int productId) {
         return dao.findAllProductDealByProductId(productId);
+    }
+
+    @Override
+    public List<ProductDTO> findProductByBrandOrderByDealCount(int brandId, int limit, int currentProductId) {
+        return dao.findProductByBrandOrderByDealCount(brandId, limit, currentProductId);
     }
 }
