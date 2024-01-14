@@ -1,5 +1,6 @@
 package com.codebee.stylehive.dto;
 
+import com.codebee.stylehive.jpa.entity.product.ProductBrandEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,13 @@ public class ProductBrandDTO {
     private String productBrandEngName;
     private String productBrandKorName;
     private String productBrandImg;
+
+    public static ProductBrandDTO of(ProductBrandEntity brand) {
+        return new ProductBrandDTO(
+          brand.getProductBrandId(),
+          brand.getProductBrandEngName(),
+          brand.getProductBrandKorName(),
+          brand.getProductBrandImg()
+        );
+    }
 }
