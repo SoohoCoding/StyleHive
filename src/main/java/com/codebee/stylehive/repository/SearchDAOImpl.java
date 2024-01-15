@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Calendar;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
+
 
 @Repository
 @NoArgsConstructor
@@ -22,9 +23,10 @@ public class SearchDAOImpl implements SearchDAO {
     TagRepo tagRepo;
     CommTagRepo commTagRepo;
     CommunityTagProductRepo communityTagProductRepo;
+    ProductTenderRepo productTenderRepo;
 
     @Autowired
-    public SearchDAOImpl(ProductRepo productRepo, ProductBrandRepo productBrandRepo, UserInfoRepo userInforepo, CommunityRepo communityRepo, TagRepo tagRepo, CommTagRepo commTagRepo, CommunityTagProductRepo communityTagProductRepo) {
+    public SearchDAOImpl(ProductRepo productRepo, ProductBrandRepo productBrandRepo, UserInfoRepo userInforepo, CommunityRepo communityRepo, TagRepo tagRepo, CommTagRepo commTagRepo, CommunityTagProductRepo communityTagProductRepo, ProductTenderRepo productTenderRepo) {
         this.productRepo = productRepo;
         this.productBrandRepo = productBrandRepo;
         this.userInforepo = userInforepo;
@@ -32,6 +34,7 @@ public class SearchDAOImpl implements SearchDAO {
         this.tagRepo = tagRepo;
         this.commTagRepo = commTagRepo;
         this.communityTagProductRepo = communityTagProductRepo;
+        this.productTenderRepo = productTenderRepo;
     };
 
     // 상품 검색 기능
@@ -105,4 +108,37 @@ public class SearchDAOImpl implements SearchDAO {
         // 일치하는 결과가 없을 경우 빈 리스트 반환
         return Collections.emptyList();
     }
+
+    // 인기 상품 상위 10개
+    @Override
+    public List<ProductEntity> getTop10ProductsByTenderCount() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+
+        Date oneWeekAgoDate = new Date(calendar.getTimeInMillis());
+
+        List<Object[]> top10ProductIds = productTenderRepo.findTop10MostTenderedProductIdsInLastWeek(oneWeekAgoDate);
+
+        List<Integer> productIdList = top10ProductIds.stream()
+                .map(objects -> ((Number) objects[0]).intValue())
+                .collect(Collectors.toList());
+
+        return productRepo.findByProductIdIn(productIdList);
+    }
+
+    // 인기 브랜드 상위 10개
+    @Override
+    public List<ProductBrandEntity> getTop10BrandsByTenderCount() {
+        List<Object[]> result = productTenderRepo.findTop10BrandsByTenderCountCustomQuery();
+
+        List<ProductBrandEntity> topBrands = new ArrayList<>();
+
+        for (Object[] row : result) {
+            ProductBrandEntity brand = (ProductBrandEntity) row[0];
+            topBrands.add(brand);
+        }
+
+        return topBrands;
+    }
+
 }

@@ -9,4 +9,7 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer> {
     // 상품 검색 기능
     List<ProductEntity> findByProductEngNameContainingOrProductKorNameContainingOrProductBrand_ProductBrandIdIn(
             String engName, String korName, List<Integer> brandIds);
+
+    // 인기 상품 상위 10개
+    List<ProductEntity> findByProductIdIn(List<Integer> productIds);
 }

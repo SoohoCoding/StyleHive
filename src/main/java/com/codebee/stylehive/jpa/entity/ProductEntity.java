@@ -1,5 +1,7 @@
 package com.codebee.stylehive.jpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "product")
+@JsonIgnoreProperties({"productBrand"})
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +33,7 @@ public class ProductEntity {
     Date productDate;
     boolean productState;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ProductTenderEntity> productTenderList = new ArrayList<>();
-
 }

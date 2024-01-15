@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -17,8 +17,10 @@ public class ProductTenderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int tenderNum;
     String userId;
-    int productId;
-    Timestamp tenderDate;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
+    Date tenderDate;
     boolean tenderFlag;
     int tenderPrice;
     int productSizeId;
