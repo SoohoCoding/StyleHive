@@ -1,13 +1,11 @@
 package com.codebee.stylehive.service;
 
-import com.codebee.stylehive.jpa.entity.CommunityEntity;
-import com.codebee.stylehive.jpa.entity.ProductBrandEntity;
-import com.codebee.stylehive.jpa.entity.ProductEntity;
-import com.codebee.stylehive.jpa.entity.UserInfoEntity;
+import com.codebee.stylehive.jpa.entity.*;
 import com.codebee.stylehive.repository.SearchDAO;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +17,13 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     public SearchServiceImpl(SearchDAO dao) {
         this.dao = dao;
+    }
+
+    // 검색 통계 수집 로직
+    @Override
+    @Transactional
+    public void logSearch(String keyword) {
+        dao.logSearch(keyword);
     }
 
     // 상품 검색 기능
@@ -39,15 +44,20 @@ public class SearchServiceImpl implements SearchService {
         return dao.searchCommunities(keyword);
     }
 
-    // 인기 상품 상위 10개
+    // 추천 상품 상위 5개
     @Override
-    public List<ProductEntity> getTop10ProductsByTenderCount() {
-        return dao.getTop10ProductsByTenderCount();
+    public List<ProductEntity> getTop5ProductsByTenderCount() {
+        return dao.getTop5ProductsByTenderCount();
     }
 
-    // 인기 브랜드 상위 10개
+    // 인기 검색어 상위 20개
+    public List<SearchStatsEntity> getTop20PopularSearches() {
+        return dao.getTop20PopularSearches();
+    }
+
+    // 인기 브랜드 상위 6개
     @Override
-    public List<ProductBrandEntity> getTop10BrandsByTenderCount() {
-        return dao.getTop10BrandsByTenderCount();
+    public List<ProductBrandEntity> getTop6BrandsByTenderCount() {
+        return dao.getTop6BrandsByTenderCount();
     }
 }

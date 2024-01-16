@@ -3,6 +3,8 @@ package com.codebee.stylehive.repository;
 
 import com.codebee.stylehive.jpa.entity.*;
 import com.codebee.stylehive.jpa.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 @Repository
 @NoArgsConstructor
 public class SearchDAOImpl implements SearchDAO {
+    @PersistenceContext
+    private EntityManager entityManager;
+
     ProductRepo productRepo;
     ProductBrandRepo productBrandRepo;
     UserInfoRepo userInforepo;
@@ -24,9 +29,10 @@ public class SearchDAOImpl implements SearchDAO {
     CommTagRepo commTagRepo;
     CommunityTagProductRepo communityTagProductRepo;
     ProductTenderRepo productTenderRepo;
+    SearchStatsRepo searchStatsRepo;
 
     @Autowired
-    public SearchDAOImpl(ProductRepo productRepo, ProductBrandRepo productBrandRepo, UserInfoRepo userInforepo, CommunityRepo communityRepo, TagRepo tagRepo, CommTagRepo commTagRepo, CommunityTagProductRepo communityTagProductRepo, ProductTenderRepo productTenderRepo) {
+    public SearchDAOImpl(ProductRepo productRepo, ProductBrandRepo productBrandRepo, UserInfoRepo userInforepo, CommunityRepo communityRepo, TagRepo tagRepo, CommTagRepo commTagRepo, CommunityTagProductRepo communityTagProductRepo, ProductTenderRepo productTenderRepo, SearchStatsRepo searchStatsRepo) {
         this.productRepo = productRepo;
         this.productBrandRepo = productBrandRepo;
         this.userInforepo = userInforepo;
@@ -35,7 +41,31 @@ public class SearchDAOImpl implements SearchDAO {
         this.commTagRepo = commTagRepo;
         this.communityTagProductRepo = communityTagProductRepo;
         this.productTenderRepo = productTenderRepo;
+        this.searchStatsRepo = searchStatsRepo;
     };
+
+    // 검색 통계 수집 로직
+    @Override
+    public void logSearch(String keyword) {
+        // 검색어가 존재하는지 확인
+        SearchStatsEntity existingSearch = entityManager.createQuery("SELECT s FROM SearchStatsEntity s WHERE s.keyword = :keyword", SearchStatsEntity.class)
+                .setParameter("keyword", keyword)
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        if (existingSearch == null) {
+            // 검색어가 존재하지 않으면 새로운 엔티티를 생성하고 저장
+            SearchStatsEntity newSearch = new SearchStatsEntity();
+            newSearch.setKeyword(keyword);
+            newSearch.setSearchCount(1);  // 처음 검색된 경우 초기 카운트 값을 설정하십시오.
+            entityManager.persist(newSearch);
+        } else {
+            // 검색어가 이미 존재하면 카운트를 증가시킴
+            existingSearch.setSearchCount(existingSearch.getSearchCount() + 1);
+        }
+    }
 
     // 상품 검색 기능
     @Override
@@ -109,27 +139,32 @@ public class SearchDAOImpl implements SearchDAO {
         return Collections.emptyList();
     }
 
-    // 인기 상품 상위 10개
+    // 추천 상품 상위 5개
     @Override
-    public List<ProductEntity> getTop10ProductsByTenderCount() {
+    public List<ProductEntity> getTop5ProductsByTenderCount() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -7);
 
         Date oneWeekAgoDate = new Date(calendar.getTimeInMillis());
 
-        List<Object[]> top10ProductIds = productTenderRepo.findTop10MostTenderedProductIdsInLastWeek(oneWeekAgoDate);
+        List<Object[]> top5ProductIds = productTenderRepo.findTop5MostTenderedProductIdsInLastWeek(oneWeekAgoDate);
 
-        List<Integer> productIdList = top10ProductIds.stream()
+        List<Integer> productIdList = top5ProductIds.stream()
                 .map(objects -> ((Number) objects[0]).intValue())
                 .collect(Collectors.toList());
 
         return productRepo.findByProductIdIn(productIdList);
     }
 
-    // 인기 브랜드 상위 10개
+    // 인기 검색어 상위 20개
+    public List<SearchStatsEntity> getTop20PopularSearches() {
+        return searchStatsRepo.findPopularSearches();
+    }
+
+    // 인기 브랜드 상위 6개
     @Override
-    public List<ProductBrandEntity> getTop10BrandsByTenderCount() {
-        List<Object[]> result = productTenderRepo.findTop10BrandsByTenderCountCustomQuery();
+    public List<ProductBrandEntity> getTop6BrandsByTenderCount() {
+        List<Object[]> result = productTenderRepo.findTop6BrandsByTenderCountCustomQuery();
 
         List<ProductBrandEntity> topBrands = new ArrayList<>();
 
@@ -140,5 +175,4 @@ public class SearchDAOImpl implements SearchDAO {
 
         return topBrands;
     }
-
 }

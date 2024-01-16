@@ -1,13 +1,12 @@
 package com.codebee.stylehive.service;
 
-import com.codebee.stylehive.jpa.entity.ProductBrandEntity;
-import com.codebee.stylehive.jpa.entity.ProductEntity;
-import com.codebee.stylehive.jpa.entity.UserInfoEntity;
-import com.codebee.stylehive.jpa.entity.CommunityEntity;
+import com.codebee.stylehive.jpa.entity.*;
 
 import java.util.List;
 
 public interface SearchService {
+    // 검색 통계 수집 로직
+    void logSearch(String keyword);
 
     // 상품 검색 기능
     List<ProductEntity> searchProducts(String keyword);
@@ -18,9 +17,12 @@ public interface SearchService {
     // 커뮤니티 검색 기능
     List<CommunityEntity> searchCommunities(String keyword);
 
-    // 인기 상품 상위 10개
-    List<ProductEntity> getTop10ProductsByTenderCount();
+    // 추천 상품 상위 5개
+    List<ProductEntity> getTop5ProductsByTenderCount();
 
-    // 인기 브랜드 상위 10개
-    List<ProductBrandEntity> getTop10BrandsByTenderCount();
+    // 인기 검색어 상위 20개
+    List<SearchStatsEntity> getTop20PopularSearches();
+
+    // 인기 브랜드 상위 6개
+    List<ProductBrandEntity> getTop6BrandsByTenderCount();
 }
