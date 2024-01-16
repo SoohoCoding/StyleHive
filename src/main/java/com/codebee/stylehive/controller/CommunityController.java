@@ -1,16 +1,21 @@
 package com.codebee.stylehive.controller;
 
 import com.codebee.stylehive.dto.CommunityDTO;
+import com.codebee.stylehive.dto.CommunityTagProductDTO;
 import com.codebee.stylehive.dto.TagDTO;
 import com.codebee.stylehive.dto.UserInfoDTO;
 import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
-import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
 import com.codebee.stylehive.service.CommunityService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @NoArgsConstructor
@@ -85,5 +90,23 @@ public class CommunityController {
         //TODO log - in
         comment.setUserId("test");
         return service.insertComment(comment);
+    }
+
+    @PostMapping("/write")
+    public String writeComm(@RequestPart(name= "sendData") String sendData,
+                            @RequestPart(name = "file", required = false) List<MultipartFile> fileList) throws JsonProcessingException {
+        CommunityDTO community;
+        List<TagDTO> tagList;
+        List<CommunityTagProductDTO> productTagList;
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String,String> map = mapper.readValue(sendData, Map.class);
+        community = mapper.convertValue(map.get("community"), CommunityDTO.class);
+        //TODO log - in
+        community.setUserId("test");
+        tagList = mapper.convertValue(map.get("tagList"), new TypeReference<List<TagDTO>>() {});
+        productTagList = mapper.convertValue(map.get("productTagList"), new TypeReference<List<CommunityTagProductDTO>>() {});
+
+        return service.insertComm(community, fileList, tagList, productTagList);
     }
 }

@@ -10,4 +10,6 @@ public interface ProductService {
     public ProductDTO findById(int id);
     public List<ProductDealDTO> findAllProductDealByProductId(int productId);
     public List<ProductDTO> findProductByBrandOrderByDealCount(int brandId, int limit, int currentProductId);
+
+    public String findProductByKeyword(String keyword, int size, int page);
 }

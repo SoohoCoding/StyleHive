@@ -36,4 +36,9 @@ public class ProductContoller {
     public List<ProductDTO> getAnotherByBrandId(@PathVariable("brandId") int brandId,@PathVariable("limit") int limit, @PathVariable("currentProductId") int currentProductId) {
         return service.findProductByBrandOrderByDealCount(brandId, limit, currentProductId);
     }
+
+    @GetMapping("/find-keyword/{keyword}/{size}/{page}")
+    public String getProductByKeyword(@PathVariable("keyword") String keyword, @PathVariable("size")int size, @PathVariable("page") int page) {
+        return service.findProductByKeyword(keyword, size, page);
+    }
 }

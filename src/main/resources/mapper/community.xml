@@ -289,4 +289,61 @@
 		left join user_info u on c.user_id = u.user_id
 		where c.user_id in (select uf.user_id2 from user_follow uf where uf.user_id = #{userId})
 	</select>
+
+	<insert id="insertComm" parameterType="community" useGeneratedKeys="true" keyColumn="commNo" keyProperty="commNo">
+		insert into community values(
+			null,
+			#{userId},
+			#{commTitle},
+			#{commContents},
+			#{commCategory},
+			0,
+			now(),
+			null,
+			1
+		)
+	</insert>
+
+	<select id="checkTagNameDuplicated" parameterType="String" resultType="int">
+		select ifnull(max(tag_id), -1) from tag
+		where tag_name = #{tagName}
+	</select>
+
+	<insert id="insertTag" parameterType="tag" useGeneratedKeys="true" keyColumn="tagId" keyProperty="tagId">
+		insert into tag values(null, #{tagName})
+	</insert>
+
+	<insert id="insertCommTag" parameterType="java.util.List">
+		insert into comm_tag values
+		<foreach collection="list" item="i" separator=",">
+			(
+			#{i.commNo},
+			#{i.tagId}
+			)
+		</foreach>
+	</insert>
+
+	<insert id="insertCommTagProduct" parameterType="java.util.List">
+		insert into community_tag_product(comm_no, product_id)
+		values
+		<foreach collection="list" item="i" separator=",">
+			(
+			#{i.commNo},
+			#{i.productId}
+			)
+		</foreach>
+	</insert>
+
+	<insert id="insertImgThumb" parameterType="java.util.List">
+		insert into img_thumb values
+		<foreach collection="list" item="i" separator=",">
+			(
+			null,
+			#{i.commNo},
+			null,
+			#{i.imgThumbUrl},
+			#{i.imgThumbStore}
+			)
+		</foreach>
+	</insert>
 </mapper>

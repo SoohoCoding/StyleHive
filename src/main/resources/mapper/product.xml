@@ -40,4 +40,37 @@
 		order by pdCount desc
 		limit #{limit}
 	</select>
+
+	<select id="selectProductByKeyword" resultType="product" parameterType="map">
+		select
+		p.product_id productId,
+		pb.product_brand_eng_name productBrandEngName,
+		(select img_thumb_url from img_thumb it where productId = it.product_id limit 1) imgUrl,
+		p.product_kor_name productKorName,
+		p.product_eng_name productEngName,
+		pt.tender_price nowBuyPrice
+		from product p
+		join product_brand pb on pb.product_brand_id = p.product_brand_id
+		left join (select tender_price, product_id from product_tender pt where tender_flag = 1 order by tender_price asc limit 1) pt on p.product_id = pt.product_id
+		where
+		p.product_eng_name like concat('%',#{keyword},'%') ||
+		p.product_kor_name like concat('%',#{keyword},'%') ||
+		p.product_model_num like concat('%',#{keyword},'%') ||
+		pb.product_brand_eng_name like concat('%',#{keyword},'%') ||
+		pb.product_brand_kor_name like concat('%',#{keyword},'%')
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+
+	<select id="selectProductByKeywordCount" resultType="int" parameterType="String">
+		select
+		count(*)
+		from product p
+		join product_brand pb on pb.product_brand_id = p.product_brand_id
+		where
+		p.product_eng_name like concat('%',#{keyword},'%') ||
+		p.product_kor_name like concat('%',#{keyword},'%') ||
+		p.product_model_num like concat('%',#{keyword},'%') ||
+		pb.product_brand_eng_name like concat('%',#{keyword},'%') ||
+		pb.product_brand_kor_name like concat('%',#{keyword},'%')
+	</select>
 </mapper>

@@ -44,4 +44,14 @@ public interface CommunityDAO {
     public int findByFollowCount(String userId);
 
     public CommunityCommentEntity insertComment(CommunityCommentEntity comment);
+
+    public int insertComm(CommunityDTO community);
+    public int insertCommTag(List<CommTagDTO> commTag);
+
+    public int checkDuplicatedTag (String tagName);
+    public int insertTag(TagDTO tag);
+
+    public int insertCommTagProduct(List<CommunityTagProductDTO> tagProduct);
+
+    public int insertImgThumb(List<ImgThumbDTO> imgThumb);
 }

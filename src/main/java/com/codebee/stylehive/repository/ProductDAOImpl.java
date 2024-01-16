@@ -4,6 +4,7 @@ import com.codebee.stylehive.dto.ProductDTO;
 import com.codebee.stylehive.dto.ProductDealDTO;
 import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.jpa.repository.ProductRepo;
+import com.codebee.stylehive.util.Util;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,18 @@ public class ProductDAOImpl implements ProductDAO {
         map.put("limit", limit);
         map.put("currentProductId", currentProductId);
         return ss.selectList("com.codebee.stylehive.product.selectProductByBrandId", map);
+    }
+
+    @Override
+    public List<ProductDTO> findProductBySearchKeyword(String keyword, int size, int page) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("keyword", keyword);
+        Util.addPageParam(map,size,page);
+        return ss.selectList("com.codebee.stylehive.product.selectProductByKeyword", map);
+    }
+
+    @Override
+    public int findProductBySearchKeywordCount(String keyword) {
+        return ss.selectOne("com.codebee.stylehive.product.selectProductByKeywordCount", keyword);
     }
 }
