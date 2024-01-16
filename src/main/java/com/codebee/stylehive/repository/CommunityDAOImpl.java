@@ -174,5 +174,36 @@ public class CommunityDAOImpl implements CommunityDAO {
         return commentRepo.save(comment);
     }
 
+    @Override
+    public int insertComm(CommunityDTO community) {
+        return ss.insert("com.codebee.stylehive.community.insertComm",community);
+    }
+
+    @Override
+    public int insertCommTag(List<CommTagDTO> commTag) {
+        return ss.insert("com.codebee.stylehive.community.insertCommTag",commTag);
+    }
+
+    @Override
+    public int checkDuplicatedTag(String tagName) {
+        return ss.selectOne("com.codebee.stylehive.community.checkTagNameDuplicated", tagName);
+    }
+
+    @Override
+    public int insertTag(TagDTO tag) {
+        return ss.insert("com.codebee.stylehive.community.insertTag",tag);
+    }
+
+    @Override
+    public int insertCommTagProduct(List<CommunityTagProductDTO> tagProduct) {
+        if(tagProduct.isEmpty()) return 0;
+        return ss.insert("com.codebee.stylehive.community.insertCommTagProduct",tagProduct);
+    }
+
+    @Override
+    public int insertImgThumb(List<ImgThumbDTO> imgThumb) {
+        return ss.insert("com.codebee.stylehive.community.insertImgThumb", imgThumb);
+    }
+
 
 }

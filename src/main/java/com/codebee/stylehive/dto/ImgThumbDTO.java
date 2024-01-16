@@ -1,20 +1,16 @@
-package com.codebee.stylehive.jpa.entity;
+package com.codebee.stylehive.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "img_thumb")
-public class ImgThumbEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int imgThumbId;
+@NoArgsConstructor
+@Alias("imgThumb")
+public class ImgThumbDTO {
+    Integer imgThumbId;
     Integer commNo;
     Integer productId;
     String imgThumbUrl;

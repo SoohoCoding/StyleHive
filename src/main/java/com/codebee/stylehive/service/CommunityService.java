@@ -3,6 +3,7 @@ package com.codebee.stylehive.service;
 import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface CommunityService {
 
     public String findByFollow(String userId, int size, int page);
     public String insertComment(CommunityCommentEntity comment);
+
+    public String insertComm(CommunityDTO community, List<MultipartFile> fileList, List<TagDTO> tagList, List<CommunityTagProductDTO> productTagList);
 }

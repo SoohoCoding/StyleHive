@@ -1,5 +1,6 @@
 package com.codebee.stylehive.service;
 
+import com.codebee.stylehive.common.FileUploadLogicService;
 import com.codebee.stylehive.dto.*;
 import com.codebee.stylehive.jpa.entity.community.CommunityCommentEntity;
 import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
@@ -10,7 +11,11 @@ import com.google.gson.JsonObject;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +25,12 @@ import java.util.Map;
 public class CommunityServiceImpl implements CommunityService {
 
     CommunityDAO dao;
+    FileUploadLogicService fileService;
 
     @Autowired
-    public CommunityServiceImpl(CommunityDAO dao) {
+    public CommunityServiceImpl(CommunityDAO dao, FileUploadLogicService fileService) {
         this.dao = dao;
+        this.fileService = fileService;
     }
 
     @Override
@@ -208,6 +215,54 @@ public class CommunityServiceImpl implements CommunityService {
         map.put("message", success ? "success" : "fail");
 
         return new Gson().toJson(map);
+    }
+
+    @Override
+    public String insertComm(CommunityDTO community,
+                             List<MultipartFile> fileList,
+                             List<TagDTO> tagList,
+                             List<CommunityTagProductDTO> productTagList) {
+        Map<String, Object> result = new HashMap<>();
+        boolean success = false;
+
+        int commResult = dao.insertComm(community);
+        int commNo = community.getCommNo();
+
+        productTagList.forEach(i->{
+            i.setCommNo(commNo);
+        });
+
+        dao.insertCommTagProduct(productTagList);
+
+        List<CommTagDTO> commTagList = new ArrayList<>();
+        tagList.forEach(i->{
+            int duplicatedCheck = dao.checkDuplicatedTag(i.getTagName());
+            if(duplicatedCheck > 0) {
+                commTagList.add(new CommTagDTO(commNo, duplicatedCheck));
+            } else {
+                dao.insertTag(i);
+                commTagList.add(new CommTagDTO(commNo, i.getTagId()));
+            }
+        });
+        dao.insertCommTag(commTagList);
+
+        List<ImgThumbDTO> imgThumbList = new ArrayList<>();
+        fileList.forEach(i->{
+            try {
+                String storeName = fileService.uploadFile(i,"community");
+                String url = "community" + File.separator + storeName;
+                imgThumbList.add(new ImgThumbDTO(null,commNo,null,url,storeName));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        dao.insertImgThumb(imgThumbList);
+
+        success = true;
+
+        result.put("message", success ? "success" : "fail");
+        result.put("commNo", commNo);
+        return new Gson().toJson(result);
     }
 
 }
