@@ -250,7 +250,7 @@ public class CommunityServiceImpl implements CommunityService {
         fileList.forEach(i->{
             try {
                 String storeName = fileService.uploadFile(i,"community");
-                String url = "community" + File.separator + storeName;
+                String url = "community" + "/" + storeName;
                 imgThumbList.add(new ImgThumbDTO(null,commNo,null,url,storeName));
             } catch (IOException e) {
                 throw new RuntimeException(e);

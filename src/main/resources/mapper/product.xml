@@ -73,4 +73,47 @@
 		pb.product_brand_eng_name like concat('%',#{keyword},'%') ||
 		pb.product_brand_kor_name like concat('%',#{keyword},'%')
 	</select>
+
+	<select id="selectProductSortDate" resultType="product" parameterType="map">
+		select
+		p.product_id,
+		p.product_eng_name,
+		pb.product_brand_eng_name,
+		(select img_thumb_url from img_thumb it where p.product_id = it.product_id limit 1) imgUrl,
+		(select tender_price from product_tender pt where tender_flag = 1 and product_id = p.product_id order by tender_price asc limit 1) nowBuyPrice
+		from product p
+		join product_brand pb on p.product_brand_id = pb.product_brand_id
+		order by p.product_date desc
+		limit #{startLimit}, #{sizeLimit}
+	</select>
+
+	<select id="countAllProduct" resultType="int">
+		select count(*) from product
+	</select>
+
+	<select id="selectTop10Brand" resultType="product_brand">
+		select
+		pb.product_brand_id,
+		pb.product_brand_eng_name,
+		pb.product_brand_img,
+		(select count(*) from product_deal pd where pd.product_id in (select product_id from product where product_brand_id = pb.product_brand_id)) dealCount
+		from product_brand pb
+		order by dealCount desc
+		limit 10
+	</select>
+
+	<select id="selectTop8Product" resultType="product">
+		select
+		p.product_id productId,
+		pb.product_brand_eng_name productBrandEngName,
+		(select img_thumb_url from img_thumb it where productId = it.product_id limit 1) imgUrl,
+		(select tender_price from product_tender pt where tender_flag = 1 and product_id = p.product_id order by tender_price asc limit 1) nowBuyPrice,
+		(select count(*) from product_deal as pd where p.product_id = pd.product_id) dealCount,
+		p.product_kor_name productKorName,
+		p.product_eng_name productEngName
+		from product p
+		join product_brand pb on pb.product_brand_id = p.product_brand_id
+		order by dealCount desc
+		limit 8
+	</select>
 </mapper>
