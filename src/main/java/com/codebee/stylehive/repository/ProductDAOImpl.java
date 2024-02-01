@@ -1,5 +1,6 @@
 package com.codebee.stylehive.repository;
 
+import com.codebee.stylehive.dto.ProductBrandDTO;
 import com.codebee.stylehive.dto.ProductDTO;
 import com.codebee.stylehive.dto.ProductDealDTO;
 import com.codebee.stylehive.jpa.entity.product.ProductEntity;
@@ -26,6 +27,11 @@ public class ProductDAOImpl implements ProductDAO {
         this.ss = ss;
     }
 
+
+    @Override
+    public int countAllProduct() {
+        return ss.selectOne("com.codebee.stylehive.product.countAllProduct");
+    }
 
     @Override
     public ProductEntity findById(int id) {
@@ -60,5 +66,22 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public int findProductBySearchKeywordCount(String keyword) {
         return ss.selectOne("com.codebee.stylehive.product.selectProductByKeywordCount", keyword);
+    }
+
+    @Override
+    public List<ProductDTO> findProductSortDate(int size, int page) {
+        Map<String, Object> map = new HashMap<>();
+        Util.addPageParam(map, size, page);
+        return ss.selectList("com.codebee.stylehive.product.selectProductSortDate", map);
+    }
+
+    @Override
+    public List<ProductBrandDTO> findTop10Brand() {
+        return ss.selectList("com.codebee.stylehive.product.selectTop10Brand");
+    }
+
+    @Override
+    public List<ProductDTO> selectTop8Product() {
+        return ss.selectList("com.codebee.stylehive.product.selectTop8Product");
     }
 }

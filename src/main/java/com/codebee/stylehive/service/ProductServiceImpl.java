@@ -1,5 +1,6 @@
 package com.codebee.stylehive.service;
 
+import com.codebee.stylehive.dto.ProductBrandDTO;
 import com.codebee.stylehive.dto.ProductDTO;
 import com.codebee.stylehive.dto.ProductDealDTO;
 import com.codebee.stylehive.jpa.entity.product.ProductEntity;
@@ -50,5 +51,27 @@ public class ProductServiceImpl implements ProductService {
         map.put("hasNextPage", hasNextPage);
 
         return new Gson().toJson(map);
+    }
+
+    @Override
+    public String findProductSortDate(int size, int page) {
+        List<ProductDTO> result = dao.findProductSortDate(size, page);
+        int count = dao.countAllProduct();
+        boolean hasNextPage = count - (size * page) > 0;
+        Map<String, Object> map = new HashMap<>();
+        map.put("productList", result);
+        map.put("hasNextPage", hasNextPage);
+
+        return new Gson().toJson(map);
+    }
+
+    @Override
+    public List<ProductBrandDTO> findTop10Brand() {
+        return dao.findTop10Brand();
+    }
+
+    @Override
+    public List<ProductDTO> findTop8Product() {
+        return dao.selectTop8Product();
     }
 }

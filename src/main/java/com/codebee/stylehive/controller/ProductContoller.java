@@ -1,5 +1,6 @@
 package com.codebee.stylehive.controller;
 
+import com.codebee.stylehive.dto.ProductBrandDTO;
 import com.codebee.stylehive.dto.ProductDTO;
 import com.codebee.stylehive.dto.ProductDealDTO;
 import com.codebee.stylehive.jpa.entity.product.ProductEntity;
@@ -41,4 +42,20 @@ public class ProductContoller {
     public String getProductByKeyword(@PathVariable("keyword") String keyword, @PathVariable("size")int size, @PathVariable("page") int page) {
         return service.findProductByKeyword(keyword, size, page);
     }
+
+    @GetMapping("/sort-date/{size}/{page}")
+    public String getProductSortDate(@PathVariable("size")int size, @PathVariable("page") int page) {
+        return service.findProductSortDate(size, page);
+    }
+
+    @GetMapping("top10-brand")
+    public List<ProductBrandDTO> findTop10Brand() {
+        return service.findTop10Brand();
+    }
+
+    @GetMapping("top8-product")
+    public List<ProductDTO> findTop8Product() {
+        return service.findTop8Product();
+    }
+
 }
