@@ -33,6 +33,15 @@ public class ProductEntity {
     Date productDate;
     boolean productState;
 
+    @Transient
+    private int minTenderPrice;
+    @Transient
+    private int userLikesCount;
+    @Transient
+    private int communityTagProductsCount;
+    @Transient
+    private List<ImgThumbEntity> imgList;
+
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ProductTenderEntity> productTenderList = new ArrayList<>();

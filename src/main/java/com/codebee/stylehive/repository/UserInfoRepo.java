@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UserInfoRepo extends JpaRepository<UserInfoEntity, String> {
     List<UserInfoEntity> findByUserNameContainingOrUserNicknameContainingOrUserIntroduceContaining(String userName, String userNickname, String userIntroduce);
+
+    UserInfoEntity findByUserId(String userId);
 }

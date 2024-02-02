@@ -21,18 +21,14 @@ public class RecentlyViewedProductDAOImpl implements RecentlyViewedProductDAO {
         this.repo = repo;
     }
 
+
     @Override
-    public List<RecentlyViewedProductEntity> getRecentlyViewedProducts(String userId) {
-        return repo.findByUserInfoUserId(userId);
+    public void save(RecentlyViewedProductEntity product) {
+        repo.save(product);
     }
 
     @Override
-    public void addToRecentlyViewedProducts(String userId, ProductEntity product) {
-        RecentlyViewedProductEntity recentlyViewedProduct = new RecentlyViewedProductEntity();
-        recentlyViewedProduct.setUserInfo(new UserInfoEntity(userId)); // 사용자 ID를 설정하는 부분
-        recentlyViewedProduct.setProduct(product);
-        recentlyViewedProduct.setViewedAt(new Date());
-
-        repo.save(recentlyViewedProduct);
+    public List<RecentlyViewedProductEntity> findByUserId(String userId) {
+        return repo.findByUserId(userId);
     }
 }

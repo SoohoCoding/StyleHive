@@ -5,6 +5,7 @@ import com.codebee.stylehive.jpa.entity.ProductBrandEntity;
 import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.jpa.entity.SearchStatsEntity;
 import com.codebee.stylehive.service.SearchService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +29,11 @@ public class SearchController {
 
     // 검색 결과 페이지
     @GetMapping
-    public Object search(@RequestParam String keyword, @RequestParam(defaultValue = "products") String tab) {
+    public Object search(@RequestParam String keyword, @RequestParam(defaultValue = "products") String tab, HttpServletRequest request) {
         // 검색 통계 수집
         service.logSearch(keyword);
         if ("users".equals(tab)) {
-            return service.searchUsers(keyword);
+            return service.searchUsers(keyword, request);
         } else if ("communities".equals(tab)) {
             return service.searchCommunities(keyword);
         } else {
@@ -56,5 +57,17 @@ public class SearchController {
     @GetMapping("/top6BrandsByTenderCount")
     public List<ProductBrandEntity> getTop6BrandsByTenderCount() {
         return service.getTop6BrandsByTenderCount();
+    }
+
+    // 연관 검색어 상위 5개
+    @GetMapping("/relatedProducts")
+    public List<String> getRelatedProducts(@RequestParam String keyword) {
+        return service.getRelatedProducts(keyword);
+    }
+
+    // 자동 완성 검색어
+    @GetMapping("/autocomplete")
+    public List<String> getAutoCompleteResults(@RequestParam String keyword) {
+        return service.getBrandAndProductAutoComplete(keyword);
     }
 }

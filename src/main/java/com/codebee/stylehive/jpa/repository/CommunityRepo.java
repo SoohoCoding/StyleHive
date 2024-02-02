@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CommunityRepo  extends JpaRepository<CommunityEntity, Integer> {
+public interface CommunityRepo extends JpaRepository<CommunityEntity, Integer> {
     List<CommunityEntity> findByCommNoIn(List<Integer> commNos);
     List<CommunityEntity> findByCommTitleContainingOrCommContentsContaining(String keyword1, String keyword2);
 }

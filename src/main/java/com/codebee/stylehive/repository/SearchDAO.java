@@ -1,6 +1,7 @@
 package com.codebee.stylehive.repository;
 
 import com.codebee.stylehive.jpa.entity.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface SearchDAO {
     List<ProductEntity> searchProducts(String keyword);
 
     // 유저 검색 기능
-    List<UserInfoEntity> searchUsers(String keyword);
+    List<UserInfoEntity> searchUsers(String keyword, HttpServletRequest request);
 
     // 커뮤니티 검색 기능
     List<CommunityEntity> searchCommunities(String keyword);
@@ -26,4 +27,13 @@ public interface SearchDAO {
 
     // 인기 브랜드 상위 6개
     List<ProductBrandEntity> getTop6BrandsByTenderCount();
+
+    // 연관 검색어 상위 5개
+    List<ProductEntity> getRelatedProducts(String keywords);
+
+    // 브랜드 자동 완성 검색어
+    List<ProductBrandEntity> getBrandNamesAutoComplete(String keyword);
+
+    // 상품 이름 자동 완성 검색어
+    List<ProductEntity> getProductNamesAutoComplete(String keyword);
 }

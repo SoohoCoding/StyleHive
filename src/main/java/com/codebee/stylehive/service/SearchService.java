@@ -1,6 +1,7 @@
 package com.codebee.stylehive.service;
 
 import com.codebee.stylehive.jpa.entity.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface SearchService {
     List<ProductEntity> searchProducts(String keyword);
 
     // 유저 검색 기능
-    List<UserInfoEntity> searchUsers(String keyword);
+    List<UserInfoEntity> searchUsers(String keyword, HttpServletRequest request);
 
     // 커뮤니티 검색 기능
     List<CommunityEntity> searchCommunities(String keyword);
@@ -25,4 +26,10 @@ public interface SearchService {
 
     // 인기 브랜드 상위 6개
     List<ProductBrandEntity> getTop6BrandsByTenderCount();
+
+    // 연관 검색어 상위 5개
+    List<String> getRelatedProducts(String keyword);
+
+    // 자동 완성 검색어
+    List<String> getBrandAndProductAutoComplete(String keyword);
 }

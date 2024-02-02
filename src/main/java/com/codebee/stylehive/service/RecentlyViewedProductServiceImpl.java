@@ -20,12 +20,12 @@ public class RecentlyViewedProductServiceImpl implements RecentlyViewedProductSe
     }
 
     @Override
-    public List<RecentlyViewedProductEntity> getRecentlyViewedProducts(String userId) {
-        return dao.getRecentlyViewedProducts(userId);
+    public void save(RecentlyViewedProductEntity product) {
+        dao.save(product);
     }
 
     @Override
-    public void addToRecentlyViewedProducts(String userId, ProductEntity product) {
-        dao.addToRecentlyViewedProducts(userId, product);
+    public List<RecentlyViewedProductEntity> findByUserId(String userId) {
+        return dao.findByUserId(userId);
     }
 }

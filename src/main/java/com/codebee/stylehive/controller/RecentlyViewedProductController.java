@@ -1,21 +1,18 @@
 package com.codebee.stylehive.controller;
 
-import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.jpa.entity.RecentlyViewedProductEntity;
 import com.codebee.stylehive.service.RecentlyViewedProductService;
+import jakarta.servlet.http.HttpSession;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @RestController
-@SessionAttributes("/api/recentlyViewedProduct")
+@NoArgsConstructor
 public class RecentlyViewedProductController {
     RecentlyViewedProductService service;
 
@@ -24,27 +21,22 @@ public class RecentlyViewedProductController {
         this.service = service;
     }
 
-//    @GetMapping("/list")
-//    public ResponseEntity<List<ProductEntity>> getRecentlyViewedProducts() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String userId = authentication.getName();
-//
-//        List<RecentlyViewedProductEntity> recentlyViewedProducts = service.getRecentlyViewedProducts(userId);
-//
-//        // RecentlyViewedProductEntity를 ProductEntity로 변환
-//        List<ProductEntity> products = recentlyViewedProducts.stream()
-//                .map(recentlyViewedProduct -> recentlyViewedProduct.getProduct())
-//                .collect(Collectors.toList());
-//
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
-//
-//    @PostMapping("/add")
-//    public ResponseEntity<String> addToRecentlyViewedProducts(@RequestBody ProductEntity product) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String userId = authentication.getName();
-//
-//        service.addToRecentlyViewedProducts(userId, product);
-//        return new ResponseEntity<>("Product added to recently viewed.", HttpStatus.OK);
-//    }
+    @PostMapping("/api/recentlyViewedProduct/save")
+    public void saveRecentlyViewedProduct(@RequestBody RecentlyViewedProductEntity product) {
+        service.save(product);
+    }
+
+    @GetMapping("/api/recentlyViewedProduct")
+    @ResponseBody
+    public List<RecentlyViewedProductEntity> getRecentlyViewedProductsByUserId(HttpSession session) {
+        String userId = (String) session.getAttribute("userId"); // 세션에서 로그인한 사용자의 아이디를 가져옵니다.
+
+        if (userId != null && !userId.isEmpty()) {
+            // 로그인한 사용자의 아이디로 최근 본 상품 목록을 조회합니다.
+            return service.findByUserId(userId);
+        } else {
+            // 세션에 로그인한 사용자의 아이디가 없는 경우, 빈 리스트를 반환합니다.
+            return Collections.emptyList();
+        }
+    }
 }
