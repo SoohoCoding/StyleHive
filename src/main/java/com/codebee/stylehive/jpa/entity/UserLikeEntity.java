@@ -1,5 +1,6 @@
 package com.codebee.stylehive.jpa.entity;
 
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

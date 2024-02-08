@@ -1,7 +1,7 @@
 package com.codebee.stylehive.jpa.repository;
 
-import com.codebee.stylehive.jpa.entity.ProductEntity;
-import com.codebee.stylehive.jpa.entity.ProductTenderEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductTenderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

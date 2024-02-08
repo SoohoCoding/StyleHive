@@ -1,6 +1,7 @@
 package com.codebee.stylehive.jpa.entity.product;
 
 import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,16 @@ public class ProductEntity {
     String productModelNum;
     Date productDate;
     boolean productState;
+
+    @Transient
+    private int minTenderPrice;
+    @Transient
+    private int userLikesCount;
+    @Transient
+    private int communityTagProductsCount;
+    @Transient
+    private List<ImgThumbEntity> imgList;
+
     public boolean getProductState() {return this.productState;}
 
     @ManyToOne(fetch = FetchType.LAZY)

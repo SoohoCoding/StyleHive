@@ -1,5 +1,8 @@
 package com.codebee.stylehive.service;
 
+import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductBrandEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.repository.SearchDAO;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

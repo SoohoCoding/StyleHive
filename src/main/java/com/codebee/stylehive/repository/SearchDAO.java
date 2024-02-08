@@ -2,6 +2,9 @@ package com.codebee.stylehive.repository;
 
 import com.codebee.stylehive.jpa.entity.UserInfoEntity;
 import com.codebee.stylehive.jpa.entity.*;
+import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductBrandEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

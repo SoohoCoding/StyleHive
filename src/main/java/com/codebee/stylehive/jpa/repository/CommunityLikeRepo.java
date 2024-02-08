@@ -1,7 +1,6 @@
 package com.codebee.stylehive.jpa.repository;
 
-import com.codebee.stylehive.jpa.entity.CommunityLikeEntity;
-import com.codebee.stylehive.jpa.entity.ProductEntity;
+import com.codebee.stylehive.jpa.entity.community.CommunityLikeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommunityLikeRepo extends JpaRepository<CommunityLikeEntity, Integer> {

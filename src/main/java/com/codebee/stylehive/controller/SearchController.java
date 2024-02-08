@@ -1,9 +1,9 @@
 package com.codebee.stylehive.controller;
 
 
+import com.codebee.stylehive.jpa.entity.product.ProductBrandEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.service.SearchService;
-import com.codebee.stylehive.jpa.entity.ProductBrandEntity;
-import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.jpa.entity.SearchStatsEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;

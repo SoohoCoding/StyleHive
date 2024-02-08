@@ -1,11 +1,7 @@
 package com.codebee.stylehive.jpa.repository;
 
-import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.jpa.entity.UserFollowEntity;
-import com.codebee.stylehive.jpa.entity.UserInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface UserFollowRepo extends JpaRepository<UserFollowEntity, String> {
     // 팔로워 숫자

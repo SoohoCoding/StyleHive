@@ -2,6 +2,9 @@ package com.codebee.stylehive.repository;
 
 
 import com.codebee.stylehive.jpa.entity.*;
+import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductBrandEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.jpa.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -110,7 +113,6 @@ public class SearchDAOImpl implements SearchDAO {
                     // 이미지가 없는 경우 빈 리스트 설정
                     product.setImgList(Collections.emptyList());
                 }
-                //product.setImgThumbnails(imgThumbRepo.findByProductId(product.getProductId()));
 
                 filteredProducts.add(product);
             }

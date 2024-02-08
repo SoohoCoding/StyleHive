@@ -1,6 +1,5 @@
 package com.codebee.stylehive.repository;
 
-import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.jpa.entity.RecentlyViewedProductEntity;
 
 import java.util.List;
