@@ -19,10 +19,10 @@ import java.util.List;
 public class ProductDTO {
     private int productId;
     private int productCateId;
+    private String productBrandId;
     private String productEngName;
     private String productKorName;
-    private String productRelease;
-    private int productBrandId;
+    private int productRelease;
     private String productColor;
     private String productModelNum;
     private Date productDate;

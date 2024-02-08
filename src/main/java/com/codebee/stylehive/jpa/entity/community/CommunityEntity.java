@@ -1,11 +1,13 @@
 package com.codebee.stylehive.jpa.entity.community;
 
+import com.codebee.stylehive.jpa.entity.ImgThumbEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +26,11 @@ public class CommunityEntity {
     Date commDate;
     Date commUpdate;
     Boolean commState;
+
+    @Transient
+    private int likeCount;
+    @Transient
+    private List<ImgThumbEntity> imgList;
+    @Transient
+    private String userImg;
 }

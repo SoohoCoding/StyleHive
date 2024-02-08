@@ -15,12 +15,12 @@ import java.util.List;
 @RestController
 @NoArgsConstructor
 @RequestMapping("/api/product")
-public class ProductContoller {
+public class ProductController {
 
 
     ProductService service;
     @Autowired
-    public ProductContoller(ProductService service) {
+    public ProductController(ProductService service) {
         this.service = service;
     }
 

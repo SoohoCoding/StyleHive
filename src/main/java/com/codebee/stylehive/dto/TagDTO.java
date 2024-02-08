@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Alias("tag")
 public class TagDTO {
-    int tagId;
-    String tagName;
+    private int tagId;
+    private String tagName;
 }

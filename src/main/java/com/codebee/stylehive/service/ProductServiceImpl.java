@@ -74,4 +74,5 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findTop8Product() {
         return dao.selectTop8Product();
     }
+
 }

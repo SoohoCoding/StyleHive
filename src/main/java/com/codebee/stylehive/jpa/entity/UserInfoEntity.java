@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,5 +32,28 @@ public class UserInfoEntity {
     private boolean userPrivate;
     private boolean userState;
     private boolean userInformation;
+
+    @Transient
+    private int userFollowsCount;
+    @Transient
+    private boolean isFollowing;
+    @Transient
+    private String loggedInUserId;
+
+    public void setUserFollowsCount(int userFollowsCount) {
+        this.userFollowsCount = userFollowsCount;
+    }
+
+    public void setIsFollowing(boolean isFollowing) {
+        this.isFollowing = isFollowing;
+    }
+
+    // userId를 받는 생성자 추가
+    public UserInfoEntity(String userId) {
+        this.userId = userId;
+    }
+
+    @OneToMany(mappedBy = "user")
+    private List<UserLikeEntity> likes;
 
 }

@@ -84,4 +84,5 @@ public class ProductDAOImpl implements ProductDAO {
     public List<ProductDTO> selectTop8Product() {
         return ss.selectList("com.codebee.stylehive.product.selectTop8Product");
     }
+
 }
