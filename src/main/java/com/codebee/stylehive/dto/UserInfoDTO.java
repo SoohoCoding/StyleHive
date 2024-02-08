@@ -5,26 +5,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Alias("user_info")
+@Alias("user")
 public class UserInfoDTO {
-    private String userId;
-    private String userPass;
-    private String userName;
-    private String userNickname;
-    private String userIntroduce;
-    private String userEmail;
-    private String userPhoneNum;
-    private int userSsn;
-    private String userImg;
-    private Integer userPoint;
-    private String userAddress;
-    private Integer userCalculate;
-    private Integer userSnsLogin;
-    private int userRole;
-    private boolean userPrivate;
-    private boolean userState;
-    private boolean userInformation;
+    String userId;
+    String userName;
+    String userNickname;
+    String userIntroduce;
+    String userEmail;
+    String userPhoneNum;
+    int userSsn;
+    String userImg;
+    int userPoint;
+    String userAddress;
+    int userCalculate;
+    int userSnsLogin;
+    int userRole;
+    boolean userPrivate;
+    boolean userState;
+    boolean userInformation;
+
+    List<CommunityDTO> commList = new ArrayList<>();
+    int followCount;
+    int followedCount;
+    int communityCount;
+    int productCount;
 }

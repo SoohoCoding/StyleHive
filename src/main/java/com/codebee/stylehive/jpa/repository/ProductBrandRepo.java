@@ -1,6 +1,6 @@
 package com.codebee.stylehive.jpa.repository;
 
-import com.codebee.stylehive.jpa.entity.ProductBrandEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductBrandEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

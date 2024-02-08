@@ -1,8 +1,8 @@
 package com.codebee.stylehive.repository;
 
+import com.codebee.stylehive.jpa.entity.UserInfoEntity;
 import com.codebee.stylehive.jpa.entity.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.codebee.stylehive.jpa.repository;
 
-import com.codebee.stylehive.jpa.entity.CommunityTagProductEntity;
 import com.codebee.stylehive.jpa.entity.ProductEntity;
+import com.codebee.stylehive.jpa.entity.community.CommunityTagProductEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

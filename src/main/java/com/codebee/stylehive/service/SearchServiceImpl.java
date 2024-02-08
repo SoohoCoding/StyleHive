@@ -1,16 +1,16 @@
 package com.codebee.stylehive.service;
 
-import com.codebee.stylehive.jpa.entity.*;
 import com.codebee.stylehive.repository.SearchDAO;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import com.codebee.stylehive.jpa.entity.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;

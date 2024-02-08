@@ -1,5 +1,8 @@
 package com.codebee.stylehive.service;
 
+import com.codebee.stylehive.jpa.entity.UserInfoEntity;
+import com.codebee.stylehive.jpa.entity.community.CommunityEntity;
+import com.codebee.stylehive.jpa.entity.product.ProductEntity;
 import com.codebee.stylehive.jpa.entity.*;
 import jakarta.servlet.http.HttpServletRequest;
 

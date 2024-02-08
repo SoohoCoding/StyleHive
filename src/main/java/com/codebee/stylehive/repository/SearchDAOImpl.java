@@ -15,8 +15,6 @@ import java.util.Calendar;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
-
 @Repository
 @NoArgsConstructor
 public class SearchDAOImpl implements SearchDAO {

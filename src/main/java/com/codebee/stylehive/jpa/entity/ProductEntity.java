@@ -1,3 +1,4 @@
+
 package com.codebee.stylehive.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,10 +1,10 @@
 package com.codebee.stylehive.controller;
 
 
+import com.codebee.stylehive.service.SearchService;
 import com.codebee.stylehive.jpa.entity.ProductBrandEntity;
 import com.codebee.stylehive.jpa.entity.ProductEntity;
 import com.codebee.stylehive.jpa.entity.SearchStatsEntity;
-import com.codebee.stylehive.service.SearchService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
